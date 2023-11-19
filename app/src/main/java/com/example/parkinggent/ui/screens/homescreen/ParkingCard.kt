@@ -17,22 +17,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.parkinggent.R
 import com.example.parkinggent.model.Parking
+import com.example.parkinggent.ui.theme.ProjectTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParkingCard(parking : Parking, modifier: Modifier = Modifier, navigateToAbout: () -> Unit) {
-
+fun ParkingCard(parking: Parking, modifier: Modifier = Modifier, navigateToAbout: () -> Unit) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
-        onClick = {navigateToAbout()}
+        onClick = { navigateToAbout() },
     ) {
         Column(
             modifier = Modifier
@@ -75,20 +77,50 @@ fun ParkingCard(parking : Parking, modifier: Modifier = Modifier, navigateToAbou
     }
 }
 
+
 @Composable
 fun Occupied(parking: Parking){
-    Text(
-        text = "${parking.used}/${parking.total}",
-        fontSize = 16.sp,
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.onSurface
-    )
+    Row{
+        Text(
+            text = "${parking.used}",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = colorResource(id = R.color.blue),
+        )
+        Text(
+            text = "/${parking.total}",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+        )
+    }
     LinearProgressIndicator(
         progress = parking.used.toFloat() / parking.total.toFloat(),
-        color = Color.Blue,
+        color = colorResource(id = R.color.blue),
         modifier = Modifier
             .height(10.dp)
             .clip(RoundedCornerShape(16.dp))
     )
+}
+@Preview
+@Composable
+fun ParkingCardPreview(){
+    ProjectTheme {
+        ParkingCard(
+            parking = Parking(
+                title = "B-Park Dampoort",
+                location="Vrijdagmarkt 1\n9000 Gent",
+                used=30,
+                total=596,
+                description = "",
+                cords="",
+                openingTime = "",
+                open= true,
+                pay= true,
+                phoneNumber = "",
+                moreInfo = ""
+            ),
+            navigateToAbout = {}
+        )
+    }
 }
 
