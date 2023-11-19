@@ -12,11 +12,7 @@ fun ParkingScreen(parkingViewmodel: ParkingViewmodel = viewModel(), navigateToAb
     val taskOverviewState by parkingViewmodel.uiState.collectAsState()
     LazyColumn {
         items(taskOverviewState.parkingList) {
-                parking ->
-            ParkingCard(
-                parking = parking,
-                navigateToAbout = navigateToAbout
-            )
+                parking -> ParkingCard(parking = parking, navigateToAbout = navigateToAbout)
         }
     }
 }

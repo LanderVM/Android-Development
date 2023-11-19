@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.parkinggent.ui.ParkingApp
-import com.example.project.ui.theme.ProjectTheme
+import com.example.parkinggent.ui.theme.ProjectTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

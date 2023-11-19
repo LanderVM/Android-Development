@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.parkinggent.R
 import com.example.parkinggent.model.Parking
-import com.example.project.ui.theme.ProjectTheme
+import com.example.parkinggent.ui.theme.ProjectTheme
 
 @Composable
 fun DetailScreen(parking: Parking){

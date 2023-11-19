@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.parkinggent.ui.screens.detailscreen.DetailScreen
 import com.example.parkinggent.ui.screens.homescreen.ParkingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +56,7 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
             }
             composable(route = NavigationRoutes.ABOUT.name) {
                 Text(text = "About")
-                //DetailScreen(parking = )
+                // DetailScreen(parking = )
                 //get current of selected parking
             }
         }
