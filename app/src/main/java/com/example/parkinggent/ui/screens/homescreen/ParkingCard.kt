@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.parkinggent.R
 import com.example.parkinggent.model.Parking
-import com.example.parkinggent.ui.theme.ProjectTheme
+import com.example.parkinggent.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,40 +38,36 @@ fun ParkingCard(parking: Parking, modifier: Modifier = Modifier, navigateToAbout
         onClick = { navigateToAbout() },
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
-                    modifier = Modifier.weight(1f)
+                    modifier = modifier.weight(1f)
                 ) {
                     Text(
                         text = parking.title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
                         text = parking.location,
                         fontWeight = FontWeight.Normal,
                         fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
                     )
                 }
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .width(150.dp)
                         .padding(top = 4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Occupied(parking)
+                    Occupied(parking, modifier)
                 }
             }
         }
@@ -79,13 +76,13 @@ fun ParkingCard(parking: Parking, modifier: Modifier = Modifier, navigateToAbout
 
 
 @Composable
-fun Occupied(parking: Parking){
+fun Occupied(parking: Parking, modifier: Modifier = Modifier){
     Row{
         Text(
             text = "${parking.used}",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
-            color = colorResource(id = R.color.blue),
+            color = colorResource(id = R.color.green),
         )
         Text(
             text = "/${parking.total}",
@@ -95,8 +92,8 @@ fun Occupied(parking: Parking){
     }
     LinearProgressIndicator(
         progress = parking.used.toFloat() / parking.total.toFloat(),
-        color = colorResource(id = R.color.blue),
-        modifier = Modifier
+        color = colorResource(id = R.color.green),
+        modifier = modifier
             .height(10.dp)
             .clip(RoundedCornerShape(16.dp))
     )
@@ -104,7 +101,7 @@ fun Occupied(parking: Parking){
 @Preview
 @Composable
 fun ParkingCardPreview(){
-    ProjectTheme {
+    AppTheme {
         ParkingCard(
             parking = Parking(
                 title = "B-Park Dampoort",

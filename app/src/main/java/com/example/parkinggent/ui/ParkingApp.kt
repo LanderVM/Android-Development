@@ -1,6 +1,7 @@
 package com.example.parkinggent.ui
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.parkinggent.R
+import com.example.parkinggent.model.Parking
 import com.example.parkinggent.ui.screens.detailscreen.DetailScreen
 import com.example.parkinggent.ui.screens.homescreen.ParkingScreen
 
@@ -59,9 +62,8 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
                 ParkingScreen(navigateToAbout = {navController.navigate(NavigationRoutes.ABOUT.name)})
             }
             composable(route = NavigationRoutes.ABOUT.name) {
-                Text(text = "About")
-                // DetailScreen(parking = )
-                //get current of selected parking
+                DetailScreen(Parking("B-Park Dampoort", "Vrijdagmarkt 1\n9000 Gent", 30, 596, "Parking in Gent", "12.0 6.0", "24/7"))
+                //get current or selected parking
             }
         }
     }
@@ -73,17 +75,15 @@ fun TaskAppAppBar(
     canNavigateBack: Boolean,
     navigateUp: () -> Unit = {},
     currentScreenTitle: Int,
+    modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        modifier = Modifier.shadow(4.dp),
+        modifier = modifier.shadow(6.dp),
         colors = TopAppBarDefaults.smallTopAppBarColors(
             titleContentColor = MaterialTheme.colorScheme.primary,
         ),
         title = {
-            Text(stringResource(id = currentScreenTitle),
-                color = colorResource(id = R.color.blue),
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Medium)
+            Text(stringResource(id = currentScreenTitle))
         },
         navigationIcon = {
             if (canNavigateBack) {

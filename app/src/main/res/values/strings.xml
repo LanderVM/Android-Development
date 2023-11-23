@@ -2,5 +2,16 @@
     <string name="app_name">ParkingGent</string>
     <string name="home_title">Parkeergarages</string>
     <string name="about_title">About</string>
-    <string name="beschrijving">Beschrijving</string>
+    <string name="description">Beschrijving</string>
+    <string name="distance">Afstand</string>
+    <string name="availableCapacity">Vrije plaatsen</string>
+    <string name="totalCapacity">Totaal plaatsen</string>
+    <string name="openingtimesDescription">Openingstijd</string>
+    <string name="isOpenNow">Open</string>
+    <string name="isClosedNow">Closed</string>
+    <string name="freeParking">Te betalen</string>
+    <string name="paidParking">Gratis</string>
+    <string name="moreInfo">Meer info</string>
+    <string name="openRouteDescription">Open routebeschrijving</string>
+
 </resources>
