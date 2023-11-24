@@ -30,7 +30,7 @@ fun DetailScreen(parking: Parking){
             .fillMaxSize()
             .padding(16.dp),
     ) {
-        Text(text = "${stringResource(R.string.description)}: ", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(text = "${stringResource(R.string.description)}: ")
         Text(text = parking.description)
         Text(text = "${stringResource(R.string.distance)}: ${parking.cords}")
         Text(text = "${stringResource(R.string.availableCapacity)}: ${(parking.total - parking.used)}")

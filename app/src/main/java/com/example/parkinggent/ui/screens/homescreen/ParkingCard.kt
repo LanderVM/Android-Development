@@ -34,7 +34,7 @@ fun ParkingCard(parking: Parking, modifier: Modifier = Modifier, navigateToAbout
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.small,
         onClick = { navigateToAbout() },
     ) {
         Column(
@@ -80,14 +80,11 @@ fun Occupied(parking: Parking, modifier: Modifier = Modifier){
     Row{
         Text(
             text = "${parking.used}",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
             color = colorResource(id = R.color.green),
+            //color = MaterialTheme.colorScheme.onTertiary
         )
         Text(
-            text = "/${parking.total}",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
+            text = "/${parking.total}"
         )
     }
     LinearProgressIndicator(
@@ -95,7 +92,7 @@ fun Occupied(parking: Parking, modifier: Modifier = Modifier){
         color = colorResource(id = R.color.green),
         modifier = modifier
             .height(10.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .clip(MaterialTheme.shapes.small)
     )
 }
 @Preview
