@@ -12,10 +12,10 @@ data class ParkingInfo(
     val description: String,
     val id: String,
     val openingtimesdescription: String,
-    val isopennow: Int,
-    val temporaryclosed: Int,
+    val isopennow: Boolean,
+    val temporaryclosed: Boolean,
     val operatorinformation: String,
-    val freeparking: Int,
+    val freeparking: Boolean,
     val urllinkaddress: String,
     val occupancytrend: String,
     val locationanddimension: LocationAndDimension, //LocationAndDimension

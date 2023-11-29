@@ -41,26 +41,4 @@ class ParkingViewmodel : ViewModel() {
 
         }
     }
-    fun getTelephoneNumbers(contactDetails: String): Map<String, String> {
-        val pattern = "Tel\\.:\\s([0-9 ]+)([^T]*(?=Tel\\.:|$))".toRegex()
-        return pattern.findAll(contactDetails).associate {
-            it.groupValues[1].trim() to it.groupValues[2].trim()
-        }
-    }
-
-    /*
-    for(phone in parkingViewmodel.getTelephoneNumbers(parking.locationanddimension.contactDetailsTelephoneNumber.toString())) {
-                        Text(
-                            text = phone.key,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 14.sp,
-                        )
-                        Text(
-                            text = phone.value,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 14.sp,
-                        )
-                    }
-
-     */
 }

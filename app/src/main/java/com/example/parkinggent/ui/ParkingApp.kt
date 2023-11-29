@@ -62,7 +62,7 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
                 ParkingScreen(navigateToAbout = {navController.navigate(NavigationRoutes.ABOUT.name)})
             }
             composable(route = NavigationRoutes.ABOUT.name) {
-                Text(text = "About")
+
             //DetailScreen(ParkingInfo())
                 //get current or selected parking
             }

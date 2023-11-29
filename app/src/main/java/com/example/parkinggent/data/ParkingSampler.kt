@@ -19,10 +19,10 @@ object ParkingSampler{
             description = "Ondergrondse parkeergarage Tolhuis in Gent",
             id = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent/parking-tolhuis",
             openingtimesdescription = "24/7",
-            isopennow = 1,
-            temporaryclosed = 0,
+            isopennow = true,
+            temporaryclosed = false,
             operatorinformation = "Mobiliteitsbedrijf Gent",
-            freeparking = 0,
+            freeparking = false,
             urllinkaddress = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent/parking-tolhuis",
             occupancytrend = "unknown",
             locationanddimension = LocationAndDimension(
