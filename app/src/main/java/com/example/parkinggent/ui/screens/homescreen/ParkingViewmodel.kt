@@ -18,4 +18,28 @@ import java.io.IOException
 class ParkingViewmodel : ViewModel() {
     private val _uiState = MutableStateFlow(ParkingState(ParkingSampler.getAll()))
     val uiState: StateFlow<ParkingState> = _uiState.asStateFlow()
+
+    // keeping the state of the api request
+    var parkingApiState: ParkingApiState by mutableStateOf(ParkingApiState.Loading)
+        private set
+
+    init {
+        getApiTasks()
+    }
+
+    private fun getApiTasks(){
+        viewModelScope.launch {
+            try{
+                val listResult = ParkingGentApi.retrofitService.getParkings().results
+                _uiState.update {
+                    it.copy(parkingList = listResult.asDomainObjects())
+                }
+                parkingApiState = ParkingApiState.Success(listResult.asDomainObjects())
+            }
+            catch (e: IOException){
+                parkingApiState = ParkingApiState.Error
+            }
+
+        }
+    }
 }

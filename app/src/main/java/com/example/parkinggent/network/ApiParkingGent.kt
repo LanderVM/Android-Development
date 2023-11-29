@@ -1,14 +1,12 @@
 package com.example.parkinggent.network
 
 import com.example.parkinggent.model.Location
-import com.example.parkinggent.model.LocationAndDimension
 import com.example.parkinggent.model.ParkingInfo
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
 
 @Serializable
 data class ApiParkingGent( val name: String,
-                          val lastupdate: LocalDateTime,
+                          val lastupdate: String,
                           val totalcapacity: Int,
                           val availablecapacity: Int,
                           val occupation: Int,
@@ -22,7 +20,7 @@ data class ApiParkingGent( val name: String,
                           val freeparking: Int,
                           val urllinkaddress: String,
                           val occupancytrend: String,
-                          val locationanddimension: LocationAndDimension,
+                          val locationanddimension: String,
                           val location: Location,
                           val text: String?,
                           val categorie: String) {

@@ -1,23 +1,8 @@
 package com.example.parkinggent.model
 
-import java.time.LocalDateTime
-data class Parking(
-    val title: String = "",
-    val location: String = "",
-    val used: Int = -1,
-    val total: Int = -1,
-    val description: String = "",
-    val cords: String = "",
-    val openingTime: String = "",
-    val open: Boolean = false,
-    val pay : Boolean = true,
-    val phoneNumber: String = "",
-    val moreInfo: String = ""
-)
-
 data class ParkingInfo(
     val name: String,
-    val lastupdate: LocalDateTime,
+    val lastupdate: String,
     val totalcapacity: Int,
     val availablecapacity: Int,
     val occupation: Int,
@@ -31,7 +16,7 @@ data class ParkingInfo(
     val freeparking: Int,
     val urllinkaddress: String,
     val occupancytrend: String,
-    val locationanddimension: LocationAndDimension,
+    val locationanddimension: String, //LocationAndDimension
     val location: Location,
     val text: String?,
     val categorie: String

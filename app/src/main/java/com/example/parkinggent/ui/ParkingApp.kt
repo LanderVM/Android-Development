@@ -28,7 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.parkinggent.R
-import com.example.parkinggent.model.Parking
+import com.example.parkinggent.model.ParkingInfo
 import com.example.parkinggent.ui.screens.detailscreen.DetailScreen
 import com.example.parkinggent.ui.screens.homescreen.ParkingScreen
 
@@ -62,7 +62,8 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
                 ParkingScreen(navigateToAbout = {navController.navigate(NavigationRoutes.ABOUT.name)})
             }
             composable(route = NavigationRoutes.ABOUT.name) {
-                DetailScreen(Parking("B-Park Dampoort", "Vrijdagmarkt 1\n9000 Gent", 30, 596, "Parking in Gent", "12.0 6.0", "24/7"))
+                Text(text = "About")
+            //DetailScreen(ParkingInfo())
                 //get current or selected parking
             }
         }

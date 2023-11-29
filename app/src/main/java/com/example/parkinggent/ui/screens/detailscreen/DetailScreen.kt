@@ -19,12 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.parkinggent.R
-import com.example.parkinggent.model.Parking
+import com.example.parkinggent.model.ParkingInfo
 import com.example.parkinggent.ui.theme.AppTheme
 
 @Composable
-fun DetailScreen(parking: Parking){
-    
+fun DetailScreen(parking: ParkingInfo){
+    /*
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +54,7 @@ fun DetailScreen(parking: Parking){
         Button(onClick = { /*TODO*/ }) {
             Text(text = stringResource(R.string.openRouteDescription))
         }
-    }
+    }*/
 }
 
 
@@ -62,6 +62,6 @@ fun DetailScreen(parking: Parking){
 @Composable
 fun DetailScreenPreview() {
     AppTheme {
-        DetailScreen(Parking("B-Park Dampoort", "Vrijdagmarkt 1\n9000 Gent", 30, 596, "Parking in Gent", "12.0 6.0", "24/7"))
+        //DetailScreen(Parking("B-Park Dampoort", "Vrijdagmarkt 1\n9000 Gent", 30, 596, "Parking in Gent", "12.0 6.0", "24/7"))
     }
 }
