@@ -20,5 +20,17 @@ class DetailViewmodel: ViewModel() {
         }
         context.startActivity(intent)
     }
+    fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val earthRadius = 6371 // Radius of the earth in km
+
+        val latDistance = Math.toRadians(lat2 - lat1)
+        val lonDistance = Math.toRadians(lon2 - lon1)
+        val a = kotlin.math.sin(latDistance / 2) * kotlin.math.sin(latDistance / 2) +
+                kotlin.math.cos(Math.toRadians(lat1)) * kotlin.math.cos(Math.toRadians(lat2)) *
+                kotlin.math.sin(lonDistance / 2) * kotlin.math.sin(lonDistance / 2)
+        val c = 2 * kotlin.math.atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
+        return earthRadius * c // Convert to distance
+    }
+
 
 }
