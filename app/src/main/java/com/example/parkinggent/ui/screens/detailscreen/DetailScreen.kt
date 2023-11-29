@@ -1,7 +1,5 @@
 package com.example.parkinggent.ui.screens.detailscreen
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,7 +47,7 @@ fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parking: Parkin
         Text(text = stringResource(if (parking.freeparking) R.string.freeParking else R.string.paidParking))
 
         for(phone in detailViewmodel.getTelephoneNumbers(parking.locationanddimension.contactDetailsTelephoneNumber)) {
-            PhoneNumber(phone)
+            PhoneNumber(phone, detailViewmodel)
         }
 
         Button(onClick = { /*TODO*/ }) {
@@ -75,16 +73,13 @@ fun IsOpen(parking: ParkingInfo) {
     }
 }
 @Composable
-fun PhoneNumber(phone: Map.Entry<String, String>) {
-    val context = LocalContext.current
+fun PhoneNumber(phone: Map.Entry<String, String>, detailViewmodel: DetailViewmodel) {
+    var localContext = LocalContext.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
-            val intent = Intent(Intent.ACTION_DIAL).apply {
-                data = Uri.parse("tel:${phone.key}")
-            }
-            context.startActivity(intent)
+            detailViewmodel.callNumber(phone.key, localContext)
         }
     ) {
         Icon(

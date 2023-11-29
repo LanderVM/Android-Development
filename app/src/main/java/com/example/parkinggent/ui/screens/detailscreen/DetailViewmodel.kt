@@ -1,11 +1,9 @@
 package com.example.parkinggent.ui.screens.detailscreen
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.example.parkinggent.data.ParkingSampler
-import com.example.parkinggent.ui.screens.homescreen.ParkingState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class DetailViewmodel: ViewModel() {
 
@@ -14,6 +12,13 @@ class DetailViewmodel: ViewModel() {
         return pattern.findAll(contactDetails.toString()).associate {
             it.groupValues[1].trim() to it.groupValues[2].trim()
         }
+    }
+
+    fun callNumber(phoneNumber: String, context: Context) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:${phoneNumber}")
+        }
+        context.startActivity(intent)
     }
 
 }
