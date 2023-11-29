@@ -1,5 +1,7 @@
 package com.example.parkinggent.model
 
+import kotlinx.serialization.Serializable
+
 data class ParkingInfo(
     val name: String,
     val lastupdate: String,
@@ -22,6 +24,7 @@ data class ParkingInfo(
     val categorie: String
 )
 
+@Serializable
 data class Location(
     val lon: Double,
     val lat: Double
