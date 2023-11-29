@@ -18,7 +18,7 @@ data class ParkingInfo(
     val freeparking: Int,
     val urllinkaddress: String,
     val occupancytrend: String,
-    val locationanddimension: String, //LocationAndDimension
+    val locationanddimension: LocationAndDimension, //LocationAndDimension
     val location: Location,
     val text: String?,
     val categorie: String
@@ -30,15 +30,16 @@ data class Location(
     val lat: Double
 )
 
+@Serializable
 data class LocationAndDimension(
     val specificAccessInformation: List<String>,
     val level: String,
     val roadNumber: String,
     val roadName: String,
-    val contactDetailsTelephoneNumber: String,
+    val contactDetailsTelephoneNumber: String? = null,
     val coordinatesForDisplay: Coordinates
 )
-
+@Serializable
 data class Coordinates(
     val latitude: Double,
     val longitude: Double

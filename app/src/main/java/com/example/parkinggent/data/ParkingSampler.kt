@@ -1,10 +1,13 @@
 package com.example.parkinggent.data
 
+import com.example.parkinggent.model.Coordinates
 import com.example.parkinggent.model.Location
+import com.example.parkinggent.model.LocationAndDimension
 import com.example.parkinggent.model.ParkingInfo
 import java.time.LocalDateTime
 
 object ParkingSampler{
+
     val sampleParking = mutableListOf(
         ParkingInfo(
             name = "Tolhuis",
@@ -22,7 +25,17 @@ object ParkingSampler{
             freeparking = 0,
             urllinkaddress = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent/parking-tolhuis",
             occupancytrend = "unknown",
-            locationanddimension = "{\"specificAccessInformation\": [\"inrit\"], \"level\": \"0\", \"roadNumber\": \"?\", \"roadName\": \"Vrijdagmarkt 1\\n9000 Gent\", \"contactDetailsTelephoneNumber\": \"Tel.: 09 266 29 00\\n(permanentie)\\nTel.: 09 266 29 01\\n(tijdens kantooruren)\", \"coordinatesForDisplay\": {\"latitude\": 51.05713405953412, \"longitude\": 3.726071777876147}}",
+            locationanddimension = LocationAndDimension(
+                specificAccessInformation= listOf("inrit"),
+                level="0",
+                roadNumber="?",
+                roadName ="Vrijdagmarkt 1 \n9000 Gent",
+                contactDetailsTelephoneNumber= "Tel.: 09 266 29 00 \n(permanentie)\nTel.: 09 266 29 01\n(tijdens kantooruren)",
+                coordinatesForDisplay= Coordinates(
+                    latitude = 51.05713405953412,
+                    longitude= 3.726071777876147
+                )
+            ),
             location = Location(
                 lon = 3.724968367281895,
                 lat = 51.0637023559265
@@ -38,5 +51,8 @@ object ParkingSampler{
             list.add(item)
         }
         list
+    }
+    fun getFirst(): ParkingInfo {
+        return sampleParking.get(0)
     }
 }
