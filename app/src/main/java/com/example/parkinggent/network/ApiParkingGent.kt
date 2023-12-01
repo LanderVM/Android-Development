@@ -1,7 +1,6 @@
 package com.example.parkinggent.network
 
 import com.example.parkinggent.model.Location
-import com.example.parkinggent.model.LocationAndDimension
 import com.example.parkinggent.model.ParkingInfo
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -25,12 +24,11 @@ data class ApiParkingGent( val name: String,
                           val locationanddimension: String,
                           val location: Location,
                           val text: String?,
-                          val categorie: String) {
-}
+                          val categorie: String)
 fun List<ApiParkingGent>.asDomainObjects(): List<ParkingInfo> {
-    var domainList = this.map {
+    val domainList = this.map {
         ParkingInfo(it.name, it.lastupdate, it.totalcapacity, it.availablecapacity, it.occupation, it.type, it.description, it.id, it.openingtimesdescription,
-            intToBoolean(it.isopennow), intToBoolean(it.temporaryclosed), it.operatorinformation, intToBoolean(it.freeparking), it.urllinkaddress, it.occupancytrend, Json.decodeFromString<LocationAndDimension>(it.locationanddimension), it.location, it.text, it.categorie)
+            intToBoolean(it.isopennow), intToBoolean(it.temporaryclosed), it.operatorinformation, intToBoolean(it.freeparking), it.urllinkaddress, it.occupancytrend, Json.decodeFromString(it.locationanddimension), it.location, it.text, it.categorie)
     }
     return domainList
 }

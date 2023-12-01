@@ -74,7 +74,7 @@ fun IsOpen(parking: ParkingInfo) {
 }
 @Composable
 fun PhoneNumber(phone: Map.Entry<String, String>, detailViewmodel: DetailViewmodel) {
-    var localContext = LocalContext.current
+    val localContext = LocalContext.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

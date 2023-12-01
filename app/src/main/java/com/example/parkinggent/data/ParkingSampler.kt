@@ -4,11 +4,10 @@ import com.example.parkinggent.model.Coordinates
 import com.example.parkinggent.model.Location
 import com.example.parkinggent.model.LocationAndDimension
 import com.example.parkinggent.model.ParkingInfo
-import java.time.LocalDateTime
 
 object ParkingSampler{
 
-    val sampleParking = mutableListOf(
+    private val sampleParking = mutableListOf(
         ParkingInfo(
             name = "Tolhuis",
             lastupdate = "2023-11-29T01:17:11",
@@ -53,6 +52,6 @@ object ParkingSampler{
         list
     }
     fun getFirst(): ParkingInfo {
-        return sampleParking.get(0)
+        return sampleParking[0]
     }
 }

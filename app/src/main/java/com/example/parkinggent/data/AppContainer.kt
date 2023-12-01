@@ -10,8 +10,7 @@ interface AppContainer {
     val parkingRepository: ParkingRepository
 }
 
-//container that takes care of dependencies
-class DefaultAppContainer(): AppContainer{
+class DefaultAppContainer: AppContainer{
 
     private val baseUrl = "https://data.stad.gent/api/explore/v2.1/catalog/datasets/bezetting-parkeergarages-real-time/"
     private val retrofit = Retrofit.Builder()

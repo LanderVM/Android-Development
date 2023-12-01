@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.parkinggent.ParkingApplication
 import com.example.parkinggent.data.ParkingRepository
 import com.example.parkinggent.data.ParkingSampler
-import com.example.parkinggent.ParkingApplication
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,15 +32,14 @@ class ParkingViewmodel(private val parkingRepository: ParkingRepository) : ViewM
 
     private fun getApiParkings(){
         viewModelScope.launch {
-            try{
+            parkingApiState = try{
                 val listResult = parkingRepository.getParking()
                 _uiState.update {
                     it.copy(parkingList = listResult)
                 }
-                parkingApiState = ParkingApiState.Success(listResult)
-            }
-            catch (e: IOException){
-                parkingApiState = ParkingApiState.Error
+                ParkingApiState.Success(listResult)
+            } catch (e: IOException){
+                ParkingApiState.Error
             }
 
         }
