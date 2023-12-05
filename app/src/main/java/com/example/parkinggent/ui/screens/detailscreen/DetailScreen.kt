@@ -31,7 +31,7 @@ import com.example.parkinggent.ui.theme.AppTheme
 @Composable
 fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parkingId: String){
     val context = LocalContext.current
-    val parking = detailViewmodel.getParkingInfoById(parkingId)
+    val parking = detailViewmodel.getParkingInfoById(parkingId)  //TODO 1 viewmodel of een sharedViemodel maken?
 
     Column(
         modifier = Modifier
