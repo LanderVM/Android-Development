@@ -28,13 +28,13 @@ import com.example.parkinggent.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParkingCard(modifier: Modifier = Modifier, parking: ParkingInfo, navigateToAbout: () -> Unit) {
+fun ParkingCard(modifier: Modifier = Modifier, parking: ParkingInfo, navigateToAbout: (String) -> Unit) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         shape = MaterialTheme.shapes.small,
-        onClick = { navigateToAbout() },
+        onClick = { navigateToAbout(parking.name) },
     ) {
         Column(
             modifier = modifier

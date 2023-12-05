@@ -25,13 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.parkinggent.R
-import com.example.parkinggent.data.ParkingSampler
 import com.example.parkinggent.model.ParkingInfo
 import com.example.parkinggent.ui.theme.AppTheme
 
 @Composable
-fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parking: ParkingInfo){
+fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parkingId: String){
     val context = LocalContext.current
+    val parking = detailViewmodel.getParkingInfoById(parkingId)
 
     Column(
         modifier = Modifier
@@ -105,6 +105,6 @@ fun PhoneNumber(phone: Map.Entry<String, String>, callNumber: (String, Context) 
 @Composable
 fun DetailScreenPreview() {
     AppTheme {
-        DetailScreen(parking = ParkingSampler.getFirst())
+        //DetailScreen(parking = ParkingSampler.getFirst())
     }
 }

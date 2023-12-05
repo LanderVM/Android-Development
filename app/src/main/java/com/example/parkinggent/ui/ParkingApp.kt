@@ -18,10 +18,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.parkinggent.ui.screens.detailscreen.DetailScreen
 import com.example.parkinggent.ui.screens.homescreen.ParkingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,9 +34,10 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
 
     val canNavigateBack = navController.previousBackStackEntry != null
     val navigateUp: () -> Unit = { navController.navigateUp() }
-    val currentScreenTitle = NavigationRoutes.valueOf(
-        backStackEntry?.destination?.route ?: NavigationRoutes.HOME.name,
-    ).title
+    val currentScreenTitle = backStackEntry?.destination?.route
+        ?.let { route ->
+            NavigationRoutes.values().firstOrNull { route.startsWith(it.name) }
+        }?.title ?: NavigationRoutes.HOME.title
 
     Scaffold(
         topBar = {
@@ -43,24 +47,28 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
                 currentScreenTitle = currentScreenTitle,
             )
         }
-    ){
-            innerPadding ->
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = NavigationRoutes.HOME.name,
             modifier = Modifier.padding(innerPadding),
         ) {
             composable(route = NavigationRoutes.HOME.name) {
-                ParkingScreen(navigateToAbout = {navController.navigate(NavigationRoutes.ABOUT.name)})
+                ParkingScreen { parkingId ->
+                    navController.navigate(NavigationRoutes.aboutRoute(parkingId))
+                }
             }
-            composable(route = NavigationRoutes.ABOUT.name) {
-
-            //DetailScreen(ParkingInfo())
-                //get current or selected parking
+            composable(
+                route = "About/{parkingId}",
+                arguments = listOf(navArgument("parkingId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val parkingId = backStackEntry.arguments?.getString("parkingId") ?: return@composable
+                DetailScreen(parkingId = parkingId)
             }
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

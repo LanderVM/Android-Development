@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun ParkingScreen(modifier: Modifier = Modifier, parkingViewmodel: ParkingViewmodel = viewModel(factory = ParkingViewmodel.Factory), navigateToAbout: () -> Unit){
+fun ParkingScreen(modifier: Modifier = Modifier, parkingViewmodel: ParkingViewmodel = viewModel(factory = ParkingViewmodel.Factory), navigateToAbout: (String) -> Unit){
     val parkingState by parkingViewmodel.uiState.collectAsState()
 
     val parkingApiState = parkingViewmodel.parkingApiState
@@ -28,7 +28,7 @@ fun ParkingScreen(modifier: Modifier = Modifier, parkingViewmodel: ParkingViewmo
 }
 
 @Composable
-fun ParkingListComponent(modifier: Modifier = Modifier, parkingState: ParkingState, navigateToAbout: () -> Unit){
+fun ParkingListComponent(modifier: Modifier = Modifier, parkingState: ParkingState, navigateToAbout: (String) -> Unit){
     val lazyListState = rememberLazyListState()
     LazyColumn(state = lazyListState) {
         items(parkingState.parkingList) {
