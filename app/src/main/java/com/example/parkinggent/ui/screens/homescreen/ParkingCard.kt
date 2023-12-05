@@ -28,7 +28,7 @@ import com.example.parkinggent.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParkingCard(parking: ParkingInfo, modifier: Modifier = Modifier, navigateToAbout: () -> Unit) {
+fun ParkingCard(modifier: Modifier = Modifier, parking: ParkingInfo, navigateToAbout: () -> Unit) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -66,7 +66,7 @@ fun ParkingCard(parking: ParkingInfo, modifier: Modifier = Modifier, navigateToA
                         .padding(top = 4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Occupied(parking, modifier)
+                    Occupied(modifier = modifier, parking= parking)
                 }
             }
         }
@@ -75,7 +75,7 @@ fun ParkingCard(parking: ParkingInfo, modifier: Modifier = Modifier, navigateToA
 
 
 @Composable
-fun Occupied(parking: ParkingInfo, modifier: Modifier = Modifier){
+fun Occupied(modifier: Modifier = Modifier, parking: ParkingInfo){
     Row{
         Text(
             text = "${parking.occupation}",

@@ -15,7 +15,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun ParkingScreen(modifier: Modifier = Modifier, parkingViewmodel: ParkingViewmodel = viewModel(factory = ParkingViewmodel.Factory), navigateToAbout: () -> Unit){
     val parkingState by parkingViewmodel.uiState.collectAsState()
 
-    //use the ApiState
     val parkingApiState = parkingViewmodel.parkingApiState
 
     Box(modifier = modifier) {

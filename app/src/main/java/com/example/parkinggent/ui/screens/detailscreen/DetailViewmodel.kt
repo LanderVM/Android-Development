@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import java.util.Locale
 
 class DetailViewmodel: ViewModel() {
 
@@ -31,6 +32,15 @@ class DetailViewmodel: ViewModel() {
         val c = 2 * kotlin.math.atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
         return earthRadius * c // Convert to distance
     }
-
-
+    fun openGoogleMaps(context: Context, latitude: Double, longitude: Double) {
+        val uri = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude)
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        context.startActivity(intent)
+    }
+    fun openUrl(context: Context, url: String) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+        }
+        context.startActivity(intent)
+    }
 }

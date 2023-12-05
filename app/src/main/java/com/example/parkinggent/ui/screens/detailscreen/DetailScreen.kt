@@ -1,5 +1,6 @@
 package com.example.parkinggent.ui.screens.detailscreen
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,8 @@ import com.example.parkinggent.ui.theme.AppTheme
 
 @Composable
 fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parking: ParkingInfo){
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,7 +40,7 @@ fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parking: Parkin
     ) {
         Text(text = "${stringResource(R.string.description)}: ")
         Text(text = parking.description, modifier = Modifier.padding(start = 10.dp))
-        Text(text = "${stringResource(R.string.distance)}: ${parking.locationanddimension.coordinatesForDisplay}")
+        Text(text = "${stringResource(R.string.distance)}: lon: ${parking.location.lon} lat: ${parking.location.lat}")
         Text(text = "${stringResource(R.string.availableCapacity)}: ${(parking.totalcapacity - parking.occupation)}")
         Text(text = "${stringResource(R.string.totalCapacity)}: ${parking.totalcapacity}")
         Text(text = "${stringResource(R.string.openingtimesDescription)}: ${parking.openingtimesdescription}")
@@ -47,13 +50,13 @@ fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parking: Parkin
         Text(text = stringResource(if (parking.freeparking) R.string.freeParking else R.string.paidParking))
 
         for(phone in detailViewmodel.getTelephoneNumbers(parking.locationanddimension.contactDetailsTelephoneNumber)) {
-            PhoneNumber(phone, detailViewmodel)
+            PhoneNumber(phone, detailViewmodel::callNumber)
         }
 
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { detailViewmodel.openUrl(context = context, url = parking.urllinkaddress) }) {
             Text(text = stringResource(R.string.moreInfo))
         }
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { detailViewmodel.openGoogleMaps(context = context, latitude = parking.location.lat, longitude = parking.location.lon) }) {
             Text(text = stringResource(R.string.openRouteDescription))
         }
     }
@@ -73,13 +76,13 @@ fun IsOpen(parking: ParkingInfo) {
     }
 }
 @Composable
-fun PhoneNumber(phone: Map.Entry<String, String>, detailViewmodel: DetailViewmodel) {
+fun PhoneNumber(phone: Map.Entry<String, String>, callNumber: (String, Context) -> Unit) {
     val localContext = LocalContext.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
-            detailViewmodel.callNumber(phone.key, localContext)
+            callNumber(phone.key, localContext)
         }
     ) {
         Icon(

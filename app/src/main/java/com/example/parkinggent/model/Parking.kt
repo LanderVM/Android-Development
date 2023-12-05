@@ -18,7 +18,7 @@ data class ParkingInfo(
     val freeparking: Boolean,
     val urllinkaddress: String,
     val occupancytrend: String,
-    val locationanddimension: LocationAndDimension, //LocationAndDimension
+    val locationanddimension: LocationAndDimension,
     val location: Location,
     val text: String?,
     val categorie: String
