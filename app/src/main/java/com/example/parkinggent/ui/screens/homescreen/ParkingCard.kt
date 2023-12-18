@@ -29,6 +29,7 @@ import com.example.parkinggent.ui.theme.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingCard(modifier: Modifier = Modifier, parking: ParkingInfo, navigateToAbout: (String) -> Unit) {
+
     Card(
         modifier = modifier
             .fillMaxWidth()

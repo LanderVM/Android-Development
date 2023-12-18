@@ -1,4 +1,4 @@
-package com.example.parkinggent.ui.screens.common
+package com.example.parkinggent.ui.common
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
