@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-layout-android:1.5.4")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.5")
     implementation("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")

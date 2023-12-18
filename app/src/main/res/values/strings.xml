@@ -14,4 +14,7 @@
     <string name="moreInfo">Meer info</string>
     <string name="openRouteDescription">Open routebeschrijving</string>
 
+
+    <string name="loadingError">Probleem met ophalen van data...</string>
+
 </resources>
