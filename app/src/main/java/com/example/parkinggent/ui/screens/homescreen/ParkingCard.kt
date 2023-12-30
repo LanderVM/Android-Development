@@ -71,8 +71,7 @@ fun ParkingCard(
                 }
                 Column(
                     modifier = modifier
-                        .width(150.dp)
-                        .padding(top = 4.dp),
+                        .width(130.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Occupied(modifier = modifier, parking = parking)
@@ -97,10 +96,10 @@ fun Occupied(modifier: Modifier = Modifier, parking: ParkingInfo) {
     LinearProgressIndicator(
         progress = 1.toFloat() - parking.occupation.toFloat() / 100,
         color = colorResource(id = R.color.green),
+        trackColor = colorResource(id = R.color.lightGray),
         modifier = modifier
-            .height(10.dp)
+            .height(8.dp)
             .clip(MaterialTheme.shapes.small)
-            .background(Color.Gray)
     )
 }
 

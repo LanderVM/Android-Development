@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ParkingViewmodel(private val parkingRepository: ParkingRepository) : ViewModel() {
+class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(ParkingState(ParkingSampler.getAll()))
     val uiState: StateFlow<ParkingState> = _uiState.asStateFlow()
 
@@ -49,7 +49,7 @@ class ParkingViewmodel(private val parkingRepository: ParkingRepository) : ViewM
             initializer {
                 val application = (this[APPLICATION_KEY] as ParkingApplication)
                 val parkingRepository = application.container.parkingRepository
-                ParkingViewmodel(parkingRepository = parkingRepository)
+                ParkingViewModel(parkingRepository = parkingRepository)
             }
         }
     }

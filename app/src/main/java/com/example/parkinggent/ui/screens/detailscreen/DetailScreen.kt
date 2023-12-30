@@ -2,10 +2,12 @@ package com.example.parkinggent.ui.screens.detailscreen
 
 import android.content.Context
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -29,76 +31,128 @@ import com.example.parkinggent.model.ParkingInfo
 import com.example.parkinggent.ui.theme.AppTheme
 
 @Composable
-fun DetailScreen(detailViewmodel: DetailViewmodel = viewModel(), parkingId: String){
+fun DetailScreen(detailViewModel: DetailViewModel = viewModel(), parkingId: String) {
     val context = LocalContext.current
-    val parking = detailViewmodel.getParkingInfoById(parkingId)
+    val parking = detailViewModel.getParkingInfoById(parkingId)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "${stringResource(R.string.description)}: ")
-        Text(text = parking.description, modifier = Modifier.padding(start = 10.dp))
-        Text(text = "${stringResource(R.string.distance)}: lon: ${parking.location.lon} lat: ${parking.location.lat}")
-        Text(text = "${stringResource(R.string.availableCapacity)}: ${(parking.totalcapacity - parking.occupation)}")
-        Text(text = "${stringResource(R.string.totalCapacity)}: ${parking.totalcapacity}")
-        Text(text = "${stringResource(R.string.openingtimesDescription)}: ${parking.openingtimesdescription}")
+        SectionTitle(title = stringResource(R.string.description))
+        DetailText(text = parking.description)
 
+        SectionTitle(title = stringResource(R.string.details))
+        DetailText(text = "${stringResource(R.string.availableCapacity)}: ${parking.availablecapacity}")
+        DetailText(text = "${stringResource(R.string.totalCapacity)}: ${parking.totalcapacity}")
+        DetailText(text = "${stringResource(R.string.openingtimesDescription)}: ${parking.openingtimesdescription}")
+
+        SectionTitle(title = stringResource(R.string.operatorInformation))
+        DetailText(text = parking.operatorinformation)
+
+        SectionTitle(title = stringResource(R.string.status))
         IsOpen(parking)
 
-        Text(text = stringResource(if (parking.freeparking) R.string.freeParking else R.string.paidParking))
+        SectionTitle(title = stringResource(R.string.parkingType))
+        DetailText(text = stringResource(if (parking.freeparking) R.string.freeParking else R.string.paidParking))
 
-        for(phone in detailViewmodel.getTelephoneNumbers(parking.locationanddimension.contactDetailsTelephoneNumber)) {
-            PhoneNumber(phone, detailViewmodel::callNumber)
+        SectionTitle(title = stringResource(R.string.contact))
+        for (phone in detailViewModel.getTelephoneNumbers(parking.locationanddimension.contactDetailsTelephoneNumber)) {
+            PhoneNumber(phone, detailViewModel::callNumber)
         }
 
-        Button(onClick = { detailViewmodel.openUrl(context = context, url = parking.urllinkaddress) }) {
-            Text(text = stringResource(R.string.moreInfo))
-        }
-        Button(onClick = { detailViewmodel.openGoogleMaps(context = context, latitude = parking.location.lat, longitude = parking.location.lon) }) {
-            Text(text = stringResource(R.string.openRouteDescription))
-        }
+        ActionButton(
+            onClick = {
+                detailViewModel.openUrl(
+                    context = context,
+                    url = parking.urllinkaddress
+                )
+            },
+            text = stringResource(R.string.moreInfo)
+        )
+        ActionButton(
+            onClick = {
+                detailViewModel.openGoogleMaps(
+                    context = context,
+                    latitude = parking.location.lat,
+                    longitude = parking.location.lon
+                )
+            },
+            text = stringResource(R.string.openRouteDescription)
+        )
     }
 }
 
 @Composable
+fun SectionTitle(title: String) {
+    Text(
+        text = title,
+        //style = MaterialTheme.typography.subtitle1, //TODO
+        modifier = Modifier.padding(bottom = 4.dp)
+    )
+}
+
+@Composable
+fun DetailText(text: String) {
+    Text(
+        text = text,
+        //style = MaterialTheme.typography.body1 //TODO
+    )
+}
+
+@Composable
+fun ActionButton(onClick: () -> Unit, text: String) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        Text(text)
+    }
+}
+
+
+@Composable
 fun IsOpen(parking: ParkingInfo) {
-    Row {
-        Text(text = stringResource(if (parking.isopennow) R.string.isOpenNow else R.string.isClosedNow))
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 4.dp)
+    ) {
+        Text(
+            text = stringResource(if (parking.isopennow) R.string.isOpenNow else R.string.isClosedNow)
+        )
+        Spacer(Modifier.width(8.dp))
         Icon(
             imageVector = if (parking.isopennow) Icons.Default.Check else Icons.Default.Close,
-            contentDescription = if (parking.isopennow) stringResource(R.string.isOpenNow) else stringResource(
-                R.string.isClosedNow
-            ),
+            contentDescription = if (parking.isopennow) stringResource(R.string.isOpenNow) else stringResource(R.string.isClosedNow),
             tint = if (parking.isopennow) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
         )
     }
 }
+
+
 @Composable
 fun PhoneNumber(phone: Map.Entry<String, String>, callNumber: (String, Context) -> Unit) {
     val localContext = LocalContext.current
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable {
-            callNumber(phone.key, localContext)
-        }
+        modifier = Modifier
+            .clickable { callNumber(phone.key, localContext) }
+            .padding(vertical = 4.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Call,
-            contentDescription = "Phone Call"
+            contentDescription = stringResource(id = R.string.detailScreen_PhoneIconDescription)
         )
         Spacer(Modifier.width(8.dp))
-        Text(
-            text = phone.key,
-        )
-        Spacer(Modifier.width(4.dp))
-        Text(
-            text = phone.value,
-        )
+        Text(text = "${phone.key} ${phone.value}")
     }
 }
+
 
 
 @Preview(showBackground = true)

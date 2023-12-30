@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.parkinggent.R
 import com.example.parkinggent.ui.screens.detailscreen.DetailScreen
 import com.example.parkinggent.ui.screens.homescreen.ParkingScreen
 
@@ -41,7 +42,7 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
 
     Scaffold(
         topBar = {
-            TaskAppAppBar(
+            AppBar(
                 canNavigateBack = canNavigateBack,
                 navigateUp = navigateUp,
                 currentScreenTitle = currentScreenTitle,
@@ -72,7 +73,7 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskAppAppBar(
+fun AppBar(
     modifier: Modifier = Modifier,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit = {},
@@ -91,7 +92,7 @@ fun TaskAppAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "navigate back",
+                        contentDescription = stringResource(id = R.string.appBarr_NavigateBackDescription),
                     )
                 }
             }

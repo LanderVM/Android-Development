@@ -10,7 +10,7 @@ import com.example.parkinggent.model.LocationAndDimension
 import com.example.parkinggent.model.ParkingInfo
 import java.util.Locale
 
-class DetailViewmodel: ViewModel() {
+class DetailViewModel : ViewModel() {
 
     fun getTelephoneNumbers(contactDetails: String?): Map<String, String> {
         val pattern = "Tel\\.:\\s([0-9 ]+)([^T]*(?=Tel\\.:|$))".toRegex()
@@ -25,22 +25,13 @@ class DetailViewmodel: ViewModel() {
         }
         context.startActivity(intent)
     }
-    fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val earthRadius = 6371 // Radius of the earth in km
 
-        val latDistance = Math.toRadians(lat2 - lat1)
-        val lonDistance = Math.toRadians(lon2 - lon1)
-        val a = kotlin.math.sin(latDistance / 2) * kotlin.math.sin(latDistance / 2) +
-                kotlin.math.cos(Math.toRadians(lat1)) * kotlin.math.cos(Math.toRadians(lat2)) *
-                kotlin.math.sin(lonDistance / 2) * kotlin.math.sin(lonDistance / 2)
-        val c = 2 * kotlin.math.atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
-        return earthRadius * c // Convert to distance
-    }
     fun openGoogleMaps(context: Context, latitude: Double, longitude: Double) {
         val uri = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         context.startActivity(intent)
     }
+
     fun openUrl(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse(url)
@@ -66,14 +57,14 @@ class DetailViewmodel: ViewModel() {
             urllinkaddress = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent/parking-tolhuis",
             occupancytrend = "unknown",
             locationanddimension = LocationAndDimension(
-                specificAccessInformation= listOf("inrit"),
-                level="0",
-                roadNumber="?",
-                roadName ="Vrijdagmarkt 1 \n9000 Gent",
-                contactDetailsTelephoneNumber= "Tel.: 09 266 29 00 \n(permanentie)\nTel.: 09 266 29 01\n(tijdens kantooruren)",
-                coordinatesForDisplay= Coordinates(
+                specificAccessInformation = listOf("inrit"),
+                level = "0",
+                roadNumber = "?",
+                roadName = "Vrijdagmarkt 1 \n9000 Gent",
+                contactDetailsTelephoneNumber = "Tel.: 09 266 29 00 \n(permanentie)\nTel.: 09 266 29 01\n(tijdens kantooruren)",
+                coordinatesForDisplay = Coordinates(
                     latitude = 51.05713405953412,
-                    longitude= 3.726071777876147
+                    longitude = 3.726071777876147
                 )
             ),
             location = Location(

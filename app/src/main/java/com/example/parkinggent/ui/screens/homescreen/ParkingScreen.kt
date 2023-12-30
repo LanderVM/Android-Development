@@ -35,11 +35,11 @@ import com.example.parkinggent.ui.common.LoadingComponent
 @Composable
 fun ParkingScreen(
     modifier: Modifier = Modifier,
-    parkingViewmodel: ParkingViewmodel = viewModel(factory = ParkingViewmodel.Factory),
+    parkingViewModel: ParkingViewModel = viewModel(factory = ParkingViewModel.Factory),
     navigateToAbout: (String) -> Unit
 ) {
-    val parkingState by parkingViewmodel.uiState.collectAsState()
-    val parkingApiState = parkingViewmodel.parkingApiState
+    val parkingState by parkingViewModel.uiState.collectAsState()
+    val parkingApiState = parkingViewModel.parkingApiState
     var selectedSortOption by remember { mutableStateOf("") }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -53,7 +53,7 @@ fun ParkingScreen(
                 onSortOptionSelected = { option ->
                     selectedSortOption = option
                 },
-                parkingViewmodel = parkingViewmodel,
+                parkingViewModel = parkingViewModel,
             )
         }
 
@@ -77,9 +77,8 @@ fun ParkingScreen(
 
 @Composable
 fun ParkingListComponent(
-    modifier: Modifier = Modifier,
     parkingState: ParkingState,
-    navigateToAbout: (String) -> Unit
+    navigateToAbout: (String) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
     LazyColumn(state = lazyListState) {
@@ -94,7 +93,7 @@ fun ParkingListComponent(
 fun SortButtons(
     selectedSortOption: String,
     onSortOptionSelected: (String) -> Unit,
-    parkingViewmodel: ParkingViewmodel
+    parkingViewModel: ParkingViewModel
 ) {
     Row(
         modifier = Modifier
@@ -107,7 +106,7 @@ fun SortButtons(
             isSelected = selectedSortOption == "Name",
             onClick = {
                 onSortOptionSelected("Name")
-                parkingViewmodel.sortParkingsByName()
+                parkingViewModel.sortParkingsByName()
             }
         )
         Spacer(Modifier.width(8.dp))
@@ -116,7 +115,7 @@ fun SortButtons(
             isSelected = selectedSortOption == "Free Places",
             onClick = {
                 onSortOptionSelected("Free Places")
-                parkingViewmodel.sortParkingsByFreePlaces()
+                parkingViewModel.sortParkingsByFreePlaces()
             }
         )
     }
