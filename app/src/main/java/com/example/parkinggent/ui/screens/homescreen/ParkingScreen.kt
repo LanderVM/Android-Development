@@ -1,6 +1,7 @@
 package com.example.parkinggent.ui.screens.homescreen
 
 import ErrorComponent
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ fun ParkingScreen(
     navigateToAbout: (String) -> Unit
 ) {
     val parkingState by parkingViewModel.uiState.collectAsState()
+    val parkingListState by parkingViewModel.uiListState.collectAsState()
     val parkingApiState = parkingViewModel.parkingApiState
     var selectedSortOption by remember { mutableStateOf("") }
 
@@ -67,7 +69,7 @@ fun ParkingScreen(
                 is ParkingApiState.Loading -> LoadingComponent()
                 is ParkingApiState.Error -> ErrorComponent(errorMessage = stringResource(id = R.string.loadingError))
                 is ParkingApiState.Success -> ParkingListComponent(
-                    parkingState = parkingState,
+                    parkingState = parkingListState,
                     navigateToAbout = navigateToAbout
                 )
             }
@@ -77,7 +79,7 @@ fun ParkingScreen(
 
 @Composable
 fun ParkingListComponent(
-    parkingState: ParkingState,
+    parkingState: ParkingListState,
     navigateToAbout: (String) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()

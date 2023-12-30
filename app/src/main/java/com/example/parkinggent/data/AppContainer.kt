@@ -1,5 +1,7 @@
 package com.example.parkinggent.data
 
+import android.content.Context
+import com.example.parkinggent.data.database.ParkingDb
 import com.example.parkinggent.network.ParkingApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -10,7 +12,7 @@ interface AppContainer {
     val parkingRepository: ParkingRepository
 }
 
-class DefaultAppContainer: AppContainer{
+class DefaultAppContainer(private val context: Context): AppContainer{
 
     private val baseUrl = "https://data.stad.gent/api/explore/v2.1/catalog/datasets/bezetting-parkeergarages-real-time/"
     private val retrofit = Retrofit.Builder()
@@ -26,7 +28,7 @@ class DefaultAppContainer: AppContainer{
 
 
     override val parkingRepository: ParkingRepository by lazy {
-        ApiParkingRepository(retrofitService)
+        CachingParkingsRepository(ParkingDb.getDatabase(context = context).parkingDao(), retrofitService)
     }
 
 }
