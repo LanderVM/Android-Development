@@ -1,6 +1,5 @@
 package com.example.parkinggent.ui.screens.homescreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,18 +82,25 @@ fun ParkingCard(
 
 @Composable
 fun Occupied(modifier: Modifier = Modifier, parking: ParkingInfo) {
+    val occupation = parking.occupation.toFloat() / 100
+    val progressIndicatorColor = when {
+        occupation > 0.8 -> colorResource(R.color.red)
+        occupation > 0.6 -> colorResource(R.color.orange)
+        else -> colorResource(R.color.green)
+    }
     Row {
         Text(
             text = "${parking.availablecapacity}",
-            color = colorResource(id = R.color.green),
+            color = progressIndicatorColor,
         )
         Text(
             text = "/${parking.totalcapacity}"
         )
     }
+
     LinearProgressIndicator(
-        progress = 1.toFloat() - parking.occupation.toFloat() / 100,
-        color = colorResource(id = R.color.green),
+        progress = 1.toFloat() - occupation,
+        color = progressIndicatorColor,
         trackColor = colorResource(id = R.color.lightGray),
         modifier = modifier
             .height(8.dp)
