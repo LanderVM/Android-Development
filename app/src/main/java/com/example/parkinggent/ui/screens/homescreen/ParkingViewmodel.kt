@@ -53,4 +53,15 @@ class ParkingViewmodel(private val parkingRepository: ParkingRepository) : ViewM
             }
         }
     }
+    fun sortParkingsByName() {
+        _uiState.update { currentState ->
+            currentState.copy(parkingList = currentState.parkingList.sortedBy { it.name })
+        }
+    }
+
+    fun sortParkingsByFreePlaces() {
+        _uiState.update { currentState ->
+            currentState.copy(parkingList = currentState.parkingList.sortedByDescending { it.availablecapacity })
+        }
+    }
 }

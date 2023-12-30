@@ -1,5 +1,6 @@
 package com.example.parkinggent.ui.screens.homescreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,12 +31,17 @@ import com.example.parkinggent.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParkingCard(modifier: Modifier = Modifier, parking: ParkingInfo, navigateToAbout: (String) -> Unit) {
+fun ParkingCard(
+    modifier: Modifier = Modifier,
+    parking: ParkingInfo,
+    navigateToAbout: (String) -> Unit
+) {
 
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .shadow(elevation = 8.dp),
         shape = MaterialTheme.shapes.small,
         onClick = { navigateToAbout(parking.name) },
     ) {
@@ -67,7 +75,7 @@ fun ParkingCard(modifier: Modifier = Modifier, parking: ParkingInfo, navigateToA
                         .padding(top = 4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Occupied(modifier = modifier, parking= parking)
+                    Occupied(modifier = modifier, parking = parking)
                 }
             }
         }
@@ -76,31 +84,32 @@ fun ParkingCard(modifier: Modifier = Modifier, parking: ParkingInfo, navigateToA
 
 
 @Composable
-fun Occupied(modifier: Modifier = Modifier, parking: ParkingInfo){
-    Row{
+fun Occupied(modifier: Modifier = Modifier, parking: ParkingInfo) {
+    Row {
         Text(
-            text = "${parking.occupation}",
+            text = "${parking.availablecapacity}",
             color = colorResource(id = R.color.green),
-            //color = MaterialTheme.colorScheme.onTertiary
         )
         Text(
             text = "/${parking.totalcapacity}"
         )
     }
     LinearProgressIndicator(
-        progress = parking.occupation.toFloat() / parking.totalcapacity.toFloat(),
+        progress = 1.toFloat() - parking.occupation.toFloat() / 100,
         color = colorResource(id = R.color.green),
         modifier = modifier
             .height(10.dp)
             .clip(MaterialTheme.shapes.small)
+            .background(Color.Gray)
     )
 }
+
 @Preview
 @Composable
-fun ParkingCardPreview(){
+fun ParkingCardPreview() {
     AppTheme {
         ParkingCard(
-           parking= ParkingSampler.getFirst(),
+            parking = ParkingSampler.getFirst(),
             navigateToAbout = {}
         )
     }

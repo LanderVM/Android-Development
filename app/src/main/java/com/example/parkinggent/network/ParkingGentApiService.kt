@@ -7,6 +7,6 @@ import retrofit2.http.GET
 data class ApiResponse(val total_count: Int, val results: List<ApiParkingGent>)
 
 interface ParkingApiService {
-    @GET("records/")
+    @GET("records?limit=20")
     suspend fun getParkings():ApiResponse
 }
