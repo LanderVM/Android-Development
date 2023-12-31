@@ -24,9 +24,8 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewModel() {
-    private val _uiState = MutableStateFlow(ParkingState(ParkingSampler.getAll()))
-    val uiState: StateFlow<ParkingState> = _uiState.asStateFlow()
-    lateinit var uiListState: StateFlow<ParkingListState>
+    private val _uiState = MutableStateFlow(ParkingListState())
+    val uiState: StateFlow<ParkingListState> = _uiState.asStateFlow()
     var parkingApiState: ParkingApiState by mutableStateOf(ParkingApiState.Loading)
         private set
 
@@ -34,37 +33,20 @@ class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewM
         getRepoParkings()
     }
 
-    /*private fun getApiParkings(){
+    private fun getRepoParkings() {
         viewModelScope.launch {
-            parkingApiState = try{
-                val listResult = parkingRepository.getParking()
-                _uiState.update {
-                    it.copy(parkingList = listResult)
+            parkingApiState = ParkingApiState.Loading
+            try {
+                parkingRepository.getParking().collect { listResult ->
+                    _uiState.value = ParkingListState(listResult)
+                    parkingApiState = ParkingApiState.Success
                 }
-                ParkingApiState.Success(listResult)
-            } catch (e: IOException){
-                ParkingApiState.Error
+            } catch (e: IOException) {
+                parkingApiState = ParkingApiState.Error
             }
-
-        }
-    }*/
-    private fun getRepoParkings(){
-        try {
-            viewModelScope.launch { parkingRepository.refresh() }
-
-            uiListState = parkingRepository.getParking().map { ParkingListState(it) }
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(5_000L),
-                    initialValue = ParkingListState()
-                )
-            parkingApiState = ParkingApiState.Success
-            Log.i("uiListState", uiListState.toString())
-        }
-        catch (e: IOException){
-            parkingApiState = ParkingApiState.Error
         }
     }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

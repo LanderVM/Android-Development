@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Check
@@ -37,28 +39,23 @@ fun DetailScreen(detailViewModel: DetailViewModel = viewModel(), parkingId: Stri
 
     Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        SectionTitle(title = stringResource(R.string.description))
-        DetailText(text = parking.description)
+        Text(text = parking.description)
 
-        SectionTitle(title = stringResource(R.string.details))
-        DetailText(text = "${stringResource(R.string.availableCapacity)}: ${parking.availablecapacity}")
-        DetailText(text = "${stringResource(R.string.totalCapacity)}: ${parking.totalcapacity}")
-        DetailText(text = "${stringResource(R.string.openingtimesDescription)}: ${parking.openingtimesdescription}")
+        Text(text = "${stringResource(R.string.availableCapacity)}: ${parking.availablecapacity}")
+        Text(text = "${stringResource(R.string.totalCapacity)}: ${parking.totalcapacity}")
+        Text(text = "${stringResource(R.string.openingtimesDescription)}: ${parking.openingtimesdescription}")
 
-        SectionTitle(title = stringResource(R.string.operatorInformation))
-        DetailText(text = parking.operatorinformation)
+        Text(text = parking.operatorinformation)
 
-        SectionTitle(title = stringResource(R.string.status))
         IsOpen(parking)
 
-        SectionTitle(title = stringResource(R.string.parkingType))
-        DetailText(text = stringResource(if (parking.freeparking) R.string.freeParking else R.string.paidParking))
+        Text(text = stringResource(if (parking.freeparking) R.string.freeParking else R.string.paidParking))
 
-        SectionTitle(title = stringResource(R.string.contact))
         for (phone in detailViewModel.getTelephoneNumbers(parking.locationanddimension.contactDetailsTelephoneNumber)) {
             PhoneNumber(phone, detailViewModel::callNumber)
         }
@@ -86,23 +83,6 @@ fun DetailScreen(detailViewModel: DetailViewModel = viewModel(), parkingId: Stri
 }
 
 @Composable
-fun SectionTitle(title: String) {
-    Text(
-        text = title,
-        //style = MaterialTheme.typography.subtitle1, //TODO
-        modifier = Modifier.padding(bottom = 4.dp)
-    )
-}
-
-@Composable
-fun DetailText(text: String) {
-    Text(
-        text = text,
-        //style = MaterialTheme.typography.body1 //TODO
-    )
-}
-
-@Composable
 fun ActionButton(onClick: () -> Unit, text: String) {
     Button(
         onClick = onClick,
@@ -127,7 +107,9 @@ fun IsOpen(parking: ParkingInfo) {
         Spacer(Modifier.width(8.dp))
         Icon(
             imageVector = if (parking.isopennow) Icons.Default.Check else Icons.Default.Close,
-            contentDescription = if (parking.isopennow) stringResource(R.string.isOpenNow) else stringResource(R.string.isClosedNow),
+            contentDescription = if (parking.isopennow) stringResource(R.string.isOpenNow) else stringResource(
+                R.string.isClosedNow
+            ),
             tint = if (parking.isopennow) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
         )
     }
@@ -152,7 +134,6 @@ fun PhoneNumber(phone: Map.Entry<String, String>, callNumber: (String, Context) 
         Text(text = "${phone.key} ${phone.value}")
     }
 }
-
 
 
 @Preview(showBackground = true)

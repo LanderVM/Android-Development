@@ -39,8 +39,7 @@ fun ParkingScreen(
     parkingViewModel: ParkingViewModel = viewModel(factory = ParkingViewModel.Factory),
     navigateToAbout: (String) -> Unit
 ) {
-    val parkingState by parkingViewModel.uiState.collectAsState()
-    val parkingListState by parkingViewModel.uiListState.collectAsState()
+    val parkingListState by parkingViewModel.uiState.collectAsState()
     val parkingApiState = parkingViewModel.parkingApiState
     var selectedSortOption by remember { mutableStateOf("") }
 
