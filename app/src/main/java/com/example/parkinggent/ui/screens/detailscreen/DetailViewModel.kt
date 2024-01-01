@@ -4,13 +4,31 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.example.parkinggent.model.Coordinates
-import com.example.parkinggent.model.Location
-import com.example.parkinggent.model.LocationAndDimension
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.parkinggent.ParkingApplication
+import com.example.parkinggent.data.ParkingRepository
 import com.example.parkinggent.model.ParkingInfo
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.util.Locale
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(private val parkingRepository: ParkingRepository) : ViewModel() {
+
+    private val _parkingDetailState = MutableStateFlow<ParkingInfo?>(null)
+    val parkingDetailState = _parkingDetailState.asStateFlow()
+
+    fun getParkingDetails(parkingId: String) {
+        viewModelScope.launch {
+            parkingRepository.getParking(parkingId).collect { parkingDetails ->
+                _parkingDetailState.value = parkingDetails
+            }
+        }
+    }
 
     fun getTelephoneNumbers(contactDetails: String?): Map<String, String> {
         val pattern = "Tel\\.:\\s([0-9 ]+)([^T]*(?=Tel\\.:|$))".toRegex()
@@ -39,40 +57,17 @@ class DetailViewModel : ViewModel() {
         context.startActivity(intent)
     }
 
-    fun getParkingInfoById(parkingId: String): ParkingInfo {
-        return ParkingInfo(
-            name = "Tolhuis",
-            lastupdate = "2023-11-29T01:17:11",
-            totalcapacity = 150,
-            availablecapacity = 72,
-            occupation = 52,
-            type = "offStreetParkingGround",
-            description = "Ondergrondse parkeergarage Tolhuis in Gent",
-            id = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent/parking-tolhuis",
-            openingtimesdescription = "24/7",
-            isopennow = true,
-            temporaryclosed = false,
-            operatorinformation = "Mobiliteitsbedrijf Gent",
-            freeparking = false,
-            urllinkaddress = "https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent/parking-tolhuis",
-            occupancytrend = "unknown",
-            locationanddimension = LocationAndDimension(
-                specificAccessInformation = listOf("inrit"),
-                level = "0",
-                roadNumber = "?",
-                roadName = "Vrijdagmarkt 1 \n9000 Gent",
-                contactDetailsTelephoneNumber = "Tel.: 09 266 29 00 \n(permanentie)\nTel.: 09 266 29 01\n(tijdens kantooruren)",
-                coordinatesForDisplay = Coordinates(
-                    latitude = 51.05713405953412,
-                    longitude = 3.726071777876147
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application =
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as ParkingApplication)
+                val repository =
+                    application.container.parkingRepository
+                DetailViewModel(
+                    parkingRepository = repository,
                 )
-            ),
-            location = Location(
-                lon = 3.724968367281895,
-                lat = 51.0637023559265
-            ),
-            text = null,
-            categorie = "parking in LEZ"
-        )
+            }
+        }
     }
 }

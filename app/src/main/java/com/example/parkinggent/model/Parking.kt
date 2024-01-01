@@ -22,7 +22,36 @@ data class ParkingInfo(
     val location: Location,
     val text: String?,
     val categorie: String
-)
+) {
+    constructor() : this(
+        name = "",
+        lastupdate = "",
+        totalcapacity = 0,
+        availablecapacity = 0,
+        occupation = 0,
+        type = "",
+        description = "",
+        id = "",
+        openingtimesdescription = "",
+        isopennow = false,
+        temporaryclosed = false,
+        operatorinformation = "",
+        freeparking = false,
+        urllinkaddress = "",
+        occupancytrend = "",
+        locationanddimension = LocationAndDimension(
+            specificAccessInformation = listOf(),
+            level = "",
+            roadNumber = "",
+            roadName = "",
+            contactDetailsTelephoneNumber = "",
+            Coordinates(latitude = 0.0, longitude = 0.0)
+        ),
+        location = Location(lon = 0.0, lat = 0.0),
+        text = null,
+        categorie = ""
+    )
+}
 
 @Serializable
 data class Location(
@@ -39,6 +68,7 @@ data class LocationAndDimension(
     val contactDetailsTelephoneNumber: String? = null,
     val coordinatesForDisplay: Coordinates
 )
+
 @Serializable
 data class Coordinates(
     val latitude: Double,

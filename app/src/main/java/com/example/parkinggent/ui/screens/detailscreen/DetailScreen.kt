@@ -21,6 +21,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,52 +36,65 @@ import com.example.parkinggent.model.ParkingInfo
 import com.example.parkinggent.ui.theme.AppTheme
 
 @Composable
-fun DetailScreen(detailViewModel: DetailViewModel = viewModel(), parkingId: String) {
+fun DetailScreen(
+    parkingId: String,
+    detailViewModel: DetailViewModel = viewModel(factory = DetailViewModel.Factory)
+) {
     val context = LocalContext.current
-    val parking = detailViewModel.getParkingInfoById(parkingId)
+    val parking by detailViewModel.parkingDetailState.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(text = parking.description)
+    LaunchedEffect(parkingId) {
+        detailViewModel.getParkingDetails(parkingId)
+    }
 
-        Text(text = "${stringResource(R.string.availableCapacity)}: ${parking.availablecapacity}")
-        Text(text = "${stringResource(R.string.totalCapacity)}: ${parking.totalcapacity}")
-        Text(text = "${stringResource(R.string.openingtimesDescription)}: ${parking.openingtimesdescription}")
+    if (parking == null) {
+        Text(text = "Loading...")
+    } else {
+        // Safe to use parking!! since we checked it's not null
+        val currentParking = parking!!
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(text = currentParking.description)
 
-        Text(text = parking.operatorinformation)
+            Text(text = "${stringResource(R.string.availableCapacity)}: ${currentParking.availablecapacity}")
+            Text(text = "${stringResource(R.string.totalCapacity)}: ${currentParking.totalcapacity}")
+            Text(text = "${stringResource(R.string.openingtimesDescription)}: ${currentParking.openingtimesdescription}")
 
-        IsOpen(parking)
+            Text(text = currentParking.operatorinformation)
 
-        Text(text = stringResource(if (parking.freeparking) R.string.freeParking else R.string.paidParking))
+            IsOpen(currentParking)
 
-        for (phone in detailViewModel.getTelephoneNumbers(parking.locationanddimension.contactDetailsTelephoneNumber)) {
-            PhoneNumber(phone, detailViewModel::callNumber)
+            Text(text = stringResource(if (currentParking.freeparking) R.string.freeParking else R.string.paidParking))
+
+            for (phone in detailViewModel.getTelephoneNumbers(currentParking.locationanddimension.contactDetailsTelephoneNumber)) {
+                PhoneNumber(phone, detailViewModel::callNumber)
+            }
+
+            ActionButton(
+                onClick = {
+                    detailViewModel.openUrl(
+                        context = context,
+                        url = currentParking.urllinkaddress
+                    )
+                },
+                text = stringResource(R.string.moreInfo)
+            )
+            ActionButton(
+                onClick = {
+                    detailViewModel.openGoogleMaps(
+                        context = context,
+                        latitude = currentParking.location.lat,
+                        longitude = currentParking.location.lon
+                    )
+                },
+                text = stringResource(R.string.openRouteDescription)
+            )
         }
-
-        ActionButton(
-            onClick = {
-                detailViewModel.openUrl(
-                    context = context,
-                    url = parking.urllinkaddress
-                )
-            },
-            text = stringResource(R.string.moreInfo)
-        )
-        ActionButton(
-            onClick = {
-                detailViewModel.openGoogleMaps(
-                    context = context,
-                    latitude = parking.location.lat,
-                    longitude = parking.location.lon
-                )
-            },
-            text = stringResource(R.string.openRouteDescription)
-        )
     }
 }
 
