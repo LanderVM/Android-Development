@@ -56,11 +56,11 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
         ) {
             composable(route = NavigationRoutes.HOME.name) {
                 ParkingScreen { parkingId ->
-                    navController.navigate(NavigationRoutes.aboutRoute(parkingId))
+                    navController.navigate("${NavigationRoutes.ABOUT.name}/$parkingId")
                 }
             }
             composable(
-                route = "About/{parkingId}",
+                route = "${NavigationRoutes.ABOUT.name}/{parkingId}",
                 arguments = listOf(navArgument("parkingId") { type = NavType.StringType })
             ) { backStackEntry ->
                 val parkingId = backStackEntry.arguments?.getString("parkingId") ?: return@composable

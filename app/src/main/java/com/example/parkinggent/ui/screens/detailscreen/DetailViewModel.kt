@@ -11,21 +11,31 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.parkinggent.ParkingApplication
 import com.example.parkinggent.data.ParkingRepository
 import com.example.parkinggent.model.ParkingInfo
+import com.example.parkinggent.ui.screens.homescreen.ParkingApiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 class DetailViewModel(private val parkingRepository: ParkingRepository) : ViewModel() {
-
     private val _parkingDetailState = MutableStateFlow<ParkingInfo?>(null)
-    val parkingDetailState = _parkingDetailState.asStateFlow()
+    val parkingDetailState: StateFlow<ParkingInfo?> = _parkingDetailState.asStateFlow()
+
+    // Add this line
+    private val _parkingApiState = MutableStateFlow<ParkingApiState>(ParkingApiState.Loading)
+    val parkingApiState: StateFlow<ParkingApiState> = _parkingApiState.asStateFlow()
 
     fun getParkingDetails(parkingId: String) {
         viewModelScope.launch {
-            parkingRepository.getParking(parkingId).collect { parkingDetails ->
+            _parkingApiState.value = ParkingApiState.Loading
+            try {
+                val parkingDetails = parkingRepository.getParking(parkingId).firstOrNull()
                 _parkingDetailState.value = parkingDetails
+                _parkingApiState.value = if (parkingDetails != null) ParkingApiState.Success else ParkingApiState.Error
+            } catch (e: Exception) {
+                _parkingApiState.value = ParkingApiState.Error
             }
         }
     }
