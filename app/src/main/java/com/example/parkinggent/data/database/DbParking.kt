@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.parkinggent.model.ParkingInfo
 
 @Entity(tableName = "parking")
-data class dbParking(
+data class DbParking(
     @PrimaryKey
     val name: String,
     val lastupdate: String,
@@ -50,7 +50,7 @@ data class Coordinates(
     val longitude: Double
 )
 
-fun dbParking.asDomainParking(): ParkingInfo {
+fun DbParking.asDomainParking(): ParkingInfo {
     return ParkingInfo(
         this.name,
         this.lastupdate,
@@ -87,8 +87,8 @@ fun dbParking.asDomainParking(): ParkingInfo {
     )
 }
 
-fun ParkingInfo.asDbParking(): dbParking {
-    return dbParking(
+fun ParkingInfo.asDbParking(): DbParking {
+    return DbParking(
         name = this.name,
         lastupdate = this.lastupdate,
         totalcapacity = this.totalcapacity,
@@ -121,8 +121,8 @@ fun ParkingInfo.asDbParking(): dbParking {
     )
 }
 
-fun List<dbParking>.asDomainParkings(): List<ParkingInfo> {
-    var taskList = this.map {
+fun List<DbParking>.asDomainParkings(): List<ParkingInfo> {
+    val taskList = this.map {
         ParkingInfo(
             it.name,
             it.lastupdate,
@@ -145,7 +145,10 @@ fun List<dbParking>.asDomainParkings(): List<ParkingInfo> {
                 it.locationanddimension.roadNumber,
                 it.locationanddimension.roadName,
                 it.locationanddimension.contactDetailsTelephoneNumber,
-                com.example.parkinggent.model.Coordinates(it.locationanddimension.coordinatesForDisplay.latitude, it.locationanddimension.coordinatesForDisplay.longitude)
+                com.example.parkinggent.model.Coordinates(
+                    it.locationanddimension.coordinatesForDisplay.latitude,
+                    it.locationanddimension.coordinatesForDisplay.longitude
+                )
             ),
             com.example.parkinggent.model.Location(it.location.lon, it.location.lat),
             it.text,

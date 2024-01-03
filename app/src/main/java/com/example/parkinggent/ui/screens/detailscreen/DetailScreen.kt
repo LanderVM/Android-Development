@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,6 +37,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.parkinggent.R
 import com.example.parkinggent.data.ParkingSampler
 import com.example.parkinggent.model.ParkingInfo
+import com.example.parkinggent.ui.common.ErrorComponent
+import com.example.parkinggent.ui.common.LoadingComponent
 import com.example.parkinggent.ui.screens.homescreen.ParkingApiState
 import com.example.parkinggent.ui.theme.AppTheme
 
@@ -59,13 +60,14 @@ fun DetailScreen(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
+            LoadingComponent()
         }
-        ParkingApiState.Error -> Text("Error loading parking details")
+
+        ParkingApiState.Error -> ErrorComponent(errorMessage = stringResource(id = R.string.loadingError))
         ParkingApiState.Success -> {
-            parking?.let {  currentParking ->
+            parking?.let { currentParking ->
                 DetailContent(currentParking, detailViewModel, context)
-            } ?: Text("No parking information available.")
+            }
         }
     }
 }
@@ -82,44 +84,44 @@ fun DetailContent(
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
-    )  {
-            Text(text = currentParking.name, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-            Text(text = currentParking.description)
+    ) {
+        Text(text = currentParking.name, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+        Text(text = currentParking.description)
 
-            Text(text = "${stringResource(R.string.availableCapacity)}: ${currentParking.availablecapacity}")
-            Text(text = "${stringResource(R.string.totalCapacity)}: ${currentParking.totalcapacity}")
-            Text(text = "${stringResource(R.string.openingtimesDescription)}: ${currentParking.openingtimesdescription}")
+        Text(text = "${stringResource(R.string.availableCapacity)}: ${currentParking.availablecapacity}")
+        Text(text = "${stringResource(R.string.totalCapacity)}: ${currentParking.totalcapacity}")
+        Text(text = "${stringResource(R.string.openingtimesDescription)}: ${currentParking.openingtimesdescription}")
 
-            Text(text = currentParking.operatorinformation)
+        Text(text = "${stringResource(R.string.operatorInformation)}: ${currentParking.operatorinformation}")
 
-            IsOpen(currentParking)
+        IsOpen(currentParking)
 
-            Text(text = stringResource(if (currentParking.freeparking) R.string.freeParking else R.string.paidParking))
+        Text(text = stringResource(if (currentParking.freeparking) R.string.freeParking else R.string.paidParking))
 
-            for (phone in detailViewModel.getTelephoneNumbers(currentParking.locationanddimension.contactDetailsTelephoneNumber)) {
-                PhoneNumber(phone, detailViewModel::callNumber)
-            }
-
-            ActionButton(
-                onClick = {
-                    detailViewModel.openUrl(
-                        context = context,
-                        url = currentParking.urllinkaddress
-                    )
-                },
-                text = stringResource(R.string.moreInfo)
-            )
-            ActionButton(
-                onClick = {
-                    detailViewModel.openGoogleMaps(
-                        context = context,
-                        latitude = currentParking.location.lat,
-                        longitude = currentParking.location.lon
-                    )
-                },
-                text = stringResource(R.string.openRouteDescription)
-            )
+        for (phone in detailViewModel.getTelephoneNumbers(currentParking.locationanddimension.contactDetailsTelephoneNumber)) {
+            PhoneNumber(phone, detailViewModel::callNumber)
         }
+
+        ActionButton(
+            onClick = {
+                detailViewModel.openUrl(
+                    context = context,
+                    url = currentParking.urllinkaddress
+                )
+            },
+            text = stringResource(R.string.moreInfo)
+        )
+        ActionButton(
+            onClick = {
+                detailViewModel.openGoogleMaps(
+                    context = context,
+                    latitude = currentParking.location.lat,
+                    longitude = currentParking.location.lon
+                )
+            },
+            text = stringResource(R.string.openRouteDescription)
+        )
+    }
 }
 
 @Composable

@@ -30,7 +30,7 @@ import com.example.parkinggent.ui.screens.homescreen.ParkingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParkingApp(navController: NavHostController = rememberNavController()){
+fun ParkingApp(navController: NavHostController = rememberNavController()) {
     val backStackEntry by navController.currentBackStackEntryAsState()
 
     val canNavigateBack = navController.previousBackStackEntry != null
@@ -63,7 +63,8 @@ fun ParkingApp(navController: NavHostController = rememberNavController()){
                 route = "${NavigationRoutes.ABOUT.name}/{parkingId}",
                 arguments = listOf(navArgument("parkingId") { type = NavType.StringType })
             ) { backStackEntry ->
-                val parkingId = backStackEntry.arguments?.getString("parkingId") ?: return@composable
+                val parkingId =
+                    backStackEntry.arguments?.getString("parkingId") ?: return@composable
                 DetailScreen(parkingId = parkingId)
             }
         }

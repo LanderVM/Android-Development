@@ -33,6 +33,7 @@ fun ParkingAppDarkThemePreview() {
         ParkingApp()
     }
 }
+
 @Preview
 @Composable
 fun ParkingAppLightThemePreview() {

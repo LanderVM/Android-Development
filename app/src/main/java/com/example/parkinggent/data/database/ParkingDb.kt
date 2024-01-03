@@ -2,7 +2,6 @@ package com.example.parkinggent.data.database
 
 import android.content.Context
 import androidx.room.Database
-import androidx.room.ProvidedTypeConverter
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
@@ -43,7 +42,7 @@ class Converters {
 }
 
 // 2. Updated Room Database with Type Converters
-@Database(entities = [dbParking::class], version = 2, exportSchema = false)
+@Database(entities = [DbParking::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class ParkingDb : RoomDatabase() {
     abstract fun parkingDao(): ParkingDao
@@ -54,7 +53,11 @@ abstract class ParkingDb : RoomDatabase() {
 
         fun getDatabase(context: Context): ParkingDb {
             return Instance ?: synchronized(this) {
-                val db = Room.databaseBuilder(context.applicationContext, ParkingDb::class.java, "parking_database")
+                val db = Room.databaseBuilder(
+                    context.applicationContext,
+                    ParkingDb::class.java,
+                    "parking_database"
+                )
                     .fallbackToDestructiveMigration()
                     .build()
                 Instance = db

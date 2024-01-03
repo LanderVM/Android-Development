@@ -12,13 +12,9 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.parkinggent.ParkingApplication
 import com.example.parkinggent.data.ParkingRepository
-import com.example.parkinggent.data.ParkingSampler
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -42,7 +38,9 @@ class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewM
                     parkingApiState = ParkingApiState.Success
                 }
             } catch (e: IOException) {
+                Log.e("ParkingViewModel", "Error fetching parkings: ${e.message}")
                 parkingApiState = ParkingApiState.Error
+
             }
         }
     }
@@ -56,6 +54,7 @@ class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewM
             }
         }
     }
+
     fun sortParkingsByName() {
         _uiState.update { currentState ->
             currentState.copy(parkingList = currentState.parkingList.sortedBy { it.name })

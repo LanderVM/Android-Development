@@ -1,7 +1,5 @@
 package com.example.parkinggent.ui.screens.homescreen
 
-import ErrorComponent
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,10 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.parkinggent.R
+import com.example.parkinggent.ui.common.ErrorComponent
 import com.example.parkinggent.ui.common.LoadingComponent
+import com.example.parkinggent.ui.theme.AppTheme
 
 @Composable
 fun ParkingScreen(
@@ -139,3 +140,13 @@ fun SortButton(
     }
 }
 
+
+@Preview
+@Composable
+fun ParkingScreenPreview() {
+    AppTheme {
+        ParkingScreen(
+            navigateToAbout = {}
+        )
+    }
+}

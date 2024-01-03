@@ -3,6 +3,7 @@ package com.example.parkinggent.ui.screens.detailscreen
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -23,7 +24,6 @@ class DetailViewModel(private val parkingRepository: ParkingRepository) : ViewMo
     private val _parkingDetailState = MutableStateFlow<ParkingInfo?>(null)
     val parkingDetailState: StateFlow<ParkingInfo?> = _parkingDetailState.asStateFlow()
 
-    // Add this line
     private val _parkingApiState = MutableStateFlow<ParkingApiState>(ParkingApiState.Loading)
     val parkingApiState: StateFlow<ParkingApiState> = _parkingApiState.asStateFlow()
 
@@ -35,6 +35,7 @@ class DetailViewModel(private val parkingRepository: ParkingRepository) : ViewMo
                 _parkingDetailState.value = parkingDetails
                 _parkingApiState.value = if (parkingDetails != null) ParkingApiState.Success else ParkingApiState.Error
             } catch (e: Exception) {
+                Log.e("DetailViewModel", "Error fetching parking details: ${e.message}")
                 _parkingApiState.value = ParkingApiState.Error
             }
         }
@@ -46,6 +47,7 @@ class DetailViewModel(private val parkingRepository: ParkingRepository) : ViewMo
             it.groupValues[1].trim() to it.groupValues[2].trim()
         }
     }
+
 
     fun callNumber(phoneNumber: String, context: Context) {
         val intent = Intent(Intent.ACTION_DIAL).apply {

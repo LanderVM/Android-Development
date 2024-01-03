@@ -25,7 +25,6 @@
     <string name="parkingScreen_SortFreeSpaces">Sorteer vrije plaatsen</string>
     <string name="parkingScreen_SortName">Sorteer op naam</string>
 
-
     <string name="loadingError">Probleem met ophalen van data...</string>
 
 </resources>

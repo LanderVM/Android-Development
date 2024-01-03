@@ -25,9 +25,6 @@ class CachingParkingsRepository(
     private val parkingDao: ParkingDao,
     private val parkingApiService: ParkingApiService
 ) : ParkingRepository {
-
-    //this repo contains logic to refresh the tasks (remote)
-    //sometimes that logic is written in a 'usecase'
     override fun getParking(): Flow<List<ParkingInfo>> {
         return parkingDao.getAllItems().map {
             it.asDomainParkings()
@@ -38,8 +35,8 @@ class CachingParkingsRepository(
         }
     }
 
-    override fun getParking(name: String): Flow<ParkingInfo?> {
-        return parkingDao.getItem(name).map {
+    override fun getParking(id: String): Flow<ParkingInfo?> {
+        return parkingDao.getItem(id).map {
             it.asDomainParking()
         }
     }
@@ -50,22 +47,14 @@ class CachingParkingsRepository(
 
     override suspend fun refresh() {
         try {
-            parkingApiService.getParkingsAsFlow().asDomainObjects().collect() { value ->
+            parkingApiService.getParkingsAsFlow().asDomainObjects().collect { value ->
                 for (parking in value) {
-                    Log.i("TEST", "refresh: $value")
                     insertParking(parking)
                 }
             }
         } catch (e: SocketTimeoutException) {
-            //log something
+            Log.i("Repository refresh", "${e.message}")
         }
 
     }
 }
-/*class ApiParkingRepository(
-    private val parkingApiService: ParkingApiService
-): ParkingRepository{
-    override suspend fun getParking(): List<ParkingInfo> {
-        return parkingApiService.getParkings().results.asDomainObjects()
-    }
-}*/

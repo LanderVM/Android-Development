@@ -12,9 +12,10 @@ interface AppContainer {
     val parkingRepository: ParkingRepository
 }
 
-class DefaultAppContainer(private val context: Context): AppContainer{
+class DefaultAppContainer(private val context: Context) : AppContainer {
 
-    private val baseUrl = "https://data.stad.gent/api/explore/v2.1/catalog/datasets/bezetting-parkeergarages-real-time/"
+    private val baseUrl =
+        "https://data.stad.gent/api/explore/v2.1/catalog/datasets/bezetting-parkeergarages-real-time/"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(
             Json.asConverterFactory("application/json".toMediaType())
@@ -22,13 +23,16 @@ class DefaultAppContainer(private val context: Context): AppContainer{
         .baseUrl(baseUrl)
         .build()
 
-    private val retrofitService : ParkingApiService by lazy {
+    private val retrofitService: ParkingApiService by lazy {
         retrofit.create(ParkingApiService::class.java)
     }
 
 
     override val parkingRepository: ParkingRepository by lazy {
-        CachingParkingsRepository(ParkingDb.getDatabase(context = context).parkingDao(), retrofitService)
+        CachingParkingsRepository(
+            ParkingDb.getDatabase(context = context).parkingDao(),
+            retrofitService
+        )
     }
 
 }
