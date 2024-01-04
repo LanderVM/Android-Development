@@ -5,6 +5,7 @@ import com.example.parkinggent.model.Coordinates
 import com.example.parkinggent.model.Location
 import com.example.parkinggent.model.LocationAndDimension
 import com.example.parkinggent.model.ParkingInfo
+import com.example.parkinggent.ui.screens.homescreen.ParkingApiState
 import com.example.parkinggent.ui.screens.homescreen.ParkingViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
@@ -140,11 +141,24 @@ class ParkingViewModelUnitTest {
         val expectedSortedByName = listOf(savaanstraatParkingInfo, tolhuisParkingInfo)
         assertEquals(expectedSortedByName, parkingListState)
     }
+
     @Test
     fun sortParkingsByFreePlaces_sorts_parking_list_by_free_places() = runTest {
         viewModel.sortParkingsByFreePlaces()
         val parkingListState = viewModel.uiState.first().parkingList
         val expectedSortedByName = listOf(tolhuisParkingInfo, savaanstraatParkingInfo)
         assertEquals(expectedSortedByName, parkingListState)
+    }
+
+    @Test
+    fun data_fetched_successfully() = runTest {
+        val mockData = listOf(tolhuisParkingInfo, savaanstraatParkingInfo)
+        Mockito.`when`(parkingRepositoryMock.getParking()).thenReturn(flowOf(mockData))
+
+        viewModel = ParkingViewModel(parkingRepositoryMock)
+        advanceUntilIdle()
+
+        assertEquals(ParkingApiState.Success, viewModel.parkingApiState)
+        assertEquals(mockData, viewModel.uiState.value.parkingList)
     }
 }
