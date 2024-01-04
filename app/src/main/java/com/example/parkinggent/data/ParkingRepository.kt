@@ -14,13 +14,44 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import java.net.SocketTimeoutException
 
+/**
+ * Defines the interface for a repository managing parking data.
+ */
 interface ParkingRepository {
+    /**
+     * Retrieves a flow of a list of all parking spots.
+     *
+     * @return A [Flow] emitting a list of [ParkingInfo] objects.
+     */
     fun getParking(): Flow<List<ParkingInfo>>
+
+    /**
+     * Retrieves a flow of a specific parking spot by its ID.
+     *
+     * @param id The unique identifier of the parking spot.
+     * @return A [Flow] emitting the requested [ParkingInfo] object.
+     */
     fun getParking(id: String): Flow<ParkingInfo?>
+
+    /**
+     * Inserts a parking spot into the repository.
+     *
+     * @param parking The [ParkingInfo] object to insert.
+     */
     suspend fun insertParking(parking: ParkingInfo)
+
+    /**
+     * Refreshes the parking data from the remote source.
+     */
     suspend fun refresh()
 }
 
+/**
+ * An implementation of [ParkingRepository] that caches parking data and fetches from a remote API.
+ *
+ * @property parkingDao The DAO for accessing the local database.
+ * @property parkingApiService The service for accessing the remote API.
+ */
 class CachingParkingsRepository(
     private val parkingDao: ParkingDao,
     private val parkingApiService: ParkingApiService
@@ -55,6 +86,5 @@ class CachingParkingsRepository(
         } catch (e: SocketTimeoutException) {
             Log.i("Repository refresh", "${e.message}")
         }
-
     }
 }

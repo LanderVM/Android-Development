@@ -8,10 +8,18 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
+/**
+ * Defines the interface for the application's dependency container.
+ */
 interface AppContainer {
     val parkingRepository: ParkingRepository
 }
 
+/**
+ * The default implementation of [AppContainer], providing dependencies for the application.
+ *
+ * @property context The application context.
+ */
 class DefaultAppContainer(private val context: Context) : AppContainer {
 
     private val baseUrl =
@@ -34,5 +42,4 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
             retrofitService
         )
     }
-
 }

@@ -5,6 +5,9 @@ import com.example.parkinggent.model.Location
 import com.example.parkinggent.model.LocationAndDimension
 import com.example.parkinggent.model.ParkingInfo
 
+/**
+ * A utility object that provides sample data for parking spots.
+ */
 object ParkingSampler {
 
     private val sampleParking = listOf(
@@ -43,5 +46,11 @@ object ParkingSampler {
             categorie = "parking in LEZ"
         )
     )
+
+    /**
+     * Returns the first parking info from the sample list.
+     *
+     * @return The first [ParkingInfo] object if available, else an empty [ParkingInfo].
+     */
     fun getFirst(): ParkingInfo = sampleParking.firstOrNull() ?: ParkingInfo()
 }

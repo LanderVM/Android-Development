@@ -9,6 +9,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.parkinggent.ui.theme.AppTheme
 
+/**
+ * Composable function to display a loading indicator.
+ *
+ * @param modifier Modifier for this composable, used to modify its appearance or behavior.
+ */
 @Composable
 fun LoadingComponent(modifier: Modifier = Modifier) {
     CircularProgressIndicator(
@@ -17,6 +22,9 @@ fun LoadingComponent(modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * Preview for the LoadingComponent.
+ */
 @Preview(showBackground = true)
 @Composable
 fun LoadingComponentPreview() {

@@ -4,12 +4,14 @@ import com.example.parkinggent.model.Location
 import com.example.parkinggent.model.ParkingInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 @Serializable
 data class ApiParkingResponse(
-    val total_count: Int,
+    @SerialName("total_count")
+    val totalCount: Int,
     val results: List<ApiParkingGent>
 )
 
@@ -36,12 +38,20 @@ data class ApiParkingGent(
     val categorie: String
 )
 
+/**
+ * Extension function to map a Flow of ApiParkingGent objects to a Flow of ParkingInfo objects.
+ * @return A Flow emitting lists of ParkingInfo objects.
+ */
 fun Flow<List<ApiParkingGent>>.asDomainObjects(): Flow<List<ParkingInfo>> {
     return map {
         it.asDomainObjects()
     }
 }
 
+/**
+ * Extension function to convert a list of ApiParkingGent objects to a list of ParkingInfo objects.
+ * @return A list of ParkingInfo objects.
+ */
 fun List<ApiParkingGent>.asDomainObjects(): List<ParkingInfo> {
     val domainList = this.map {
         ParkingInfo(
@@ -69,6 +79,11 @@ fun List<ApiParkingGent>.asDomainObjects(): List<ParkingInfo> {
     return domainList
 }
 
+/**
+ * Converts an integer to a boolean value.
+ * @param value The integer value to convert.
+ * @return True if value is non-zero, false otherwise.
+ */
 fun intToBoolean(value: Int): Boolean {
     return value != 0
 }
