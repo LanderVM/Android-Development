@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun ParkingCard(
             .fillMaxWidth()
             .padding(16.dp)
             .shadow(elevation = 8.dp)
-            .testTag("parkingCardTag"),
+            .testTag(stringResource(id = R.string.navigationTest_parkingCardTag)),
         shape = MaterialTheme.shapes.small,
         onClick = { navigateToAbout(parking.name) },
     ) {

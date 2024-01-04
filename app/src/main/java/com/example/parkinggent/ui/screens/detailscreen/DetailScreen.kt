@@ -102,7 +102,7 @@ fun DetailContent(
 
         Text(text = "${stringResource(R.string.availableCapacity)}: ${currentParking.availablecapacity}")
         Text(text = "${stringResource(R.string.totalCapacity)}: ${currentParking.totalcapacity}")
-        Text(text = "${stringResource(R.string.openingtimesDescription)}: ${currentParking.openingtimesdescription}")
+        Text(text = "${stringResource(R.string.openingTimesDescription)}: ${currentParking.openingtimesdescription}")
 
         Text(text = "${stringResource(R.string.operatorInformation)}: ${currentParking.operatorinformation}")
 

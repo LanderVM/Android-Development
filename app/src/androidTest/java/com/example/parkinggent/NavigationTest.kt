@@ -3,19 +3,11 @@ package com.example.parkinggent
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
-import androidx.compose.ui.test.onLast
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToNode
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.example.parkinggent.data.ParkingSampler
 import com.example.parkinggent.ui.NavigationRoutes
 import com.example.parkinggent.ui.ParkingApp
 import kotlinx.coroutines.delay
@@ -30,6 +22,8 @@ class ParkingNavigationTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var navController: TestNavHostController
+    private var shortDelay = 300L
+    private var longDelay = 1500L
 
     @Before
     fun setupParkingGentAppNavHost() {
@@ -50,11 +44,11 @@ class ParkingNavigationTest {
     fun parkingHomeScreen_hasSortButtons() {
         navController.assertCurrentRouteName(NavigationRoutes.HOME.name)
 
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.parkingScreen_SortName))
+        composeTestRule.onNodeWithStringText(R.string.parkingScreen_SortName)
             .assertExists()
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.parkingScreen_SortFreeSpaces))
+        composeTestRule.onNodeWithStringText(R.string.parkingScreen_SortFreeSpaces)
             .assertExists()
-        composeTestRule.onNodeWithText("Sort")
+        composeTestRule.onNodeWithStringText(R.string.parkingScreen_Sort)
             .assertDoesNotExist()
     }
 
@@ -68,21 +62,22 @@ class ParkingNavigationTest {
         openFistParkingCard()
 
         runBlocking {
-            delay(300L)
+            delay(shortDelay)
 
-            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.appBarr_NavigateBackDescription))
-           .assertExists()
-            .performClick()
+            composeTestRule.onNodeWithStringContentDescription(R.string.appBarr_NavigateBackDescription)
+                .assertExists()
+                .performClick()
 
-        navController.assertCurrentRouteName(NavigationRoutes.HOME.name)
+            navController.assertCurrentRouteName(NavigationRoutes.HOME.name)
         }
     }
 
-    private  fun openFistParkingCard(){
+    private fun openFistParkingCard() {
         runBlocking {
-            delay(1500L)
-            composeTestRule.onAllNodesWithTag("parkingCardTag")
+            delay(longDelay)
+            composeTestRule.onAllNodesWithStringTag(R.string.navigationTest_parkingCardTag)
                 .onFirst()
+                .assertExists()
                 .performClick()
 
             navController.assertCurrentRouteName("${NavigationRoutes.ABOUT.name}/{parkingId}")

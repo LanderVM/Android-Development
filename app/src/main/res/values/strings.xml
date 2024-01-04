@@ -6,7 +6,7 @@
     <string name="details">Details</string>
     <string name="availableCapacity">Beschikbare Capaciteit</string>
     <string name="totalCapacity">Totale Capaciteit</string>
-    <string name="openingtimesDescription">Openingstijd</string>
+    <string name="openingTimesDescription">Openingstijd</string>
     <string name="operatorInformation">Operator Informatie</string>
     <string name="status">Status</string>
     <string name="isOpenNow">Nu Open</string>
@@ -24,7 +24,9 @@
 
     <string name="parkingScreen_SortFreeSpaces">Sorteer vrije plaatsen</string>
     <string name="parkingScreen_SortName">Sorteer op naam</string>
+    <string name="parkingScreen_Sort">Sort</string>
 
     <string name="loadingError">Probleem met ophalen van data...</string>
+    <string name="navigationTest_parkingCardTag">parkingCardTag</string>
 
 </resources>

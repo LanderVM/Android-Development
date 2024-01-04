@@ -84,6 +84,9 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.mockito:mockito-core:3.12.4")
+    implementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
