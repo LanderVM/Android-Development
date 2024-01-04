@@ -71,6 +71,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
+    implementation("androidx.navigation:navigation-testing:2.7.6")
     //room
     val room_version = "2.5.0"
     implementation("androidx.room:room-runtime:$room_version")
