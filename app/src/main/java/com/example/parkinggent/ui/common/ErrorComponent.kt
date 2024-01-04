@@ -18,7 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.example.parkinggent.R
 import com.example.parkinggent.ui.theme.AppTheme
 
-
+/**
+ * Composable function to display an error message.
+ *
+ * @param modifier Modifier for this composable, used to modify its appearance or behavior.
+ * @param errorMessage The error message text to be displayed.
+ */
 @Composable
 fun ErrorComponent(
     modifier: Modifier = Modifier,
@@ -43,6 +48,9 @@ fun ErrorComponent(
     }
 }
 
+/**
+ * Preview for the ErrorComponent.
+ */
 @Preview(showBackground = true)
 @Composable
 fun ErrorComponentPreview() {

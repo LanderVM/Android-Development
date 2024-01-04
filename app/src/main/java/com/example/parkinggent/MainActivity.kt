@@ -11,7 +11,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.parkinggent.ui.ParkingApp
 import com.example.parkinggent.ui.theme.AppTheme
 
+/**
+ * The main activity for the Parking Gent application.
+ */
 class MainActivity : ComponentActivity() {
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState.
+     *                           Otherwise, it is null.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -26,6 +36,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Preview for the ParkingApp with a dark theme.
+ */
 @Preview
 @Composable
 fun ParkingAppDarkThemePreview() {
@@ -34,6 +47,9 @@ fun ParkingAppDarkThemePreview() {
     }
 }
 
+/**
+ * Preview for the ParkingApp with a light theme.
+ */
 @Preview
 @Composable
 fun ParkingAppLightThemePreview() {

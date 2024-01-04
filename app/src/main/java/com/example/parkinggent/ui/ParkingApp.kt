@@ -28,6 +28,11 @@ import com.example.parkinggent.R
 import com.example.parkinggent.ui.screens.detailscreen.DetailScreen
 import com.example.parkinggent.ui.screens.homescreen.ParkingScreen
 
+/**
+ * Composable function to set up the app's navigation structure.
+ *
+ * @param navController The NavController for managing app navigation.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingApp(navController: NavHostController = rememberNavController()) {
@@ -71,7 +76,14 @@ fun ParkingApp(navController: NavHostController = rememberNavController()) {
     }
 }
 
-
+/**
+ * Composable function to display the app bar.
+ *
+ * @param modifier The modifier to be applied to the TopAppBar.
+ * @param canNavigateBack A boolean indicating if navigation back is possible.
+ * @param navigateUp A lambda function to handle navigation up.
+ * @param currentScreenTitle The resource ID of the current screen's title.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBar(

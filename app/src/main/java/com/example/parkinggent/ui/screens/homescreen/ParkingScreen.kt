@@ -34,6 +34,13 @@ import com.example.parkinggent.ui.common.ErrorComponent
 import com.example.parkinggent.ui.common.LoadingComponent
 import com.example.parkinggent.ui.theme.AppTheme
 
+/**
+ * Composable function that represents the main screen displaying parking spots.
+ *
+ * @param modifier The modifier to be applied to the Column.
+ * @param parkingViewModel The ViewModel providing parking data and functionality.
+ * @param navigateToAbout Function to navigate to the detail screen of a parking spot.
+ */
 @Composable
 fun ParkingScreen(
     modifier: Modifier = Modifier,
@@ -77,6 +84,12 @@ fun ParkingScreen(
     }
 }
 
+/**
+ * Composable function that represents a list of parking cards.
+ *
+ * @param parkingState The state containing the list of parking spots to display.
+ * @param navigateToAbout Function to navigate to the detail screen of a parking spot.
+ */
 @Composable
 fun ParkingListComponent(
     parkingState: ParkingListState,
@@ -90,7 +103,13 @@ fun ParkingListComponent(
     }
 }
 
-
+/**
+ * Composable function to display sorting buttons for parking spots.
+ *
+ * @param selectedSortOption The currently selected sorting option.
+ * @param onSortOptionSelected Function called when a new sorting option is selected.
+ * @param parkingViewModel The ViewModel providing parking data and functionality.
+ */
 @Composable
 fun SortButtons(
     selectedSortOption: String,
@@ -123,6 +142,13 @@ fun SortButtons(
     }
 }
 
+/**
+ * Composable function for a single sorting button.
+ *
+ * @param text The text to display on the button.
+ * @param isSelected Boolean indicating if this option is currently selected.
+ * @param onClick Function called when the button is clicked.
+ */
 @Composable
 fun SortButton(
     text: String,
@@ -140,7 +166,9 @@ fun SortButton(
     }
 }
 
-
+/**
+ * Preview for the ParkingScreen.
+ */
 @Preview
 @Composable
 fun ParkingScreenPreview() {

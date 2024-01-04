@@ -27,6 +27,13 @@ import com.example.parkinggent.data.ParkingSampler
 import com.example.parkinggent.model.ParkingInfo
 import com.example.parkinggent.ui.theme.AppTheme
 
+/**
+ * Composable function for displaying a parking card.
+ *
+ * @param modifier The modifier to be applied to the Card.
+ * @param parking The [ParkingInfo] object containing parking spot information.
+ * @param navigateToAbout A lambda function to handle navigation to the details screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingCard(
@@ -79,7 +86,12 @@ fun ParkingCard(
     }
 }
 
-
+/**
+ * Composable function to display the occupancy of a parking spot.
+ *
+ * @param modifier The modifier to be applied to the LinearProgressIndicator.
+ * @param parking The [ParkingInfo] object containing parking spot information.
+ */
 @Composable
 fun Occupied(modifier: Modifier = Modifier, parking: ParkingInfo) {
     val occupation = parking.occupation.toFloat() / 100
@@ -108,6 +120,9 @@ fun Occupied(modifier: Modifier = Modifier, parking: ParkingInfo) {
     )
 }
 
+/**
+ * Preview for the ParkingCard.
+ */
 @Preview
 @Composable
 fun ParkingCardPreview() {

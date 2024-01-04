@@ -19,16 +19,29 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
+/**
+ * ViewModel for managing parking data and state in the ParkingScreen.
+ * It handles fetching parking data from the repository, sorting, and error handling.
+ *
+ * @property parkingRepository The repository from which parking data is fetched.
+ */
 class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(ParkingListState())
     val uiState: StateFlow<ParkingListState> = _uiState.asStateFlow()
     var parkingApiState: ParkingApiState by mutableStateOf(ParkingApiState.Loading)
         private set
 
+    /**
+     * Initializes the ViewModel by fetching parking data from the repository.
+     */
     init {
         getRepoParkings()
     }
 
+    /**
+     * Fetches parking data from the repository and updates the UI state.
+     * Sets the parkingApiState to Success or Error based on the result.
+     */
     private fun getRepoParkings() {
         viewModelScope.launch {
             parkingApiState = ParkingApiState.Loading
@@ -45,6 +58,10 @@ class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewM
         }
     }
 
+    /**
+     * Factory for creating instances of the ParkingViewModel.
+     * Ensures that the ViewModel is supplied with necessary dependencies.
+     */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -55,12 +72,18 @@ class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewM
         }
     }
 
+    /**
+    * Sorts the parking list by name in ascending order.
+    */
     fun sortParkingsByName() {
         _uiState.update { currentState ->
             currentState.copy(parkingList = currentState.parkingList.sortedBy { it.name })
         }
     }
 
+    /**
+     * Sorts the parking list by the number of free places in descending order.
+     */
     fun sortParkingsByFreePlaces() {
         _uiState.update { currentState ->
             currentState.copy(parkingList = currentState.parkingList.sortedByDescending { it.availablecapacity })
