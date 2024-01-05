@@ -21,6 +21,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
+/**
+ * A test class for the ParkingDao of the Parking Gent app.
+ * It uses Room's in-memory database for testing database interactions.
+ */
 @RunWith(AndroidJUnit4::class)
 class ParkingDaoTest {
     private lateinit var parkingDao: ParkingDao
@@ -95,34 +99,47 @@ class ParkingDaoTest {
         categorie = "parking in LEZ"
     )
 
-    // Utility functions
+    /**
+     * Inserts a single parking entry into the test database.
+     */
     private suspend fun addOneParkingToDb() {
         parkingDao.insert(parking1.asDbParking())
     }
 
+    /**
+     * Inserts two different parking entries into the test database.
+     */
     private suspend fun addTwoParkingsToDb() {
         parkingDao.insert(parking1.asDbParking())
         parkingDao.insert(parking2.asDbParking())
     }
 
+    /**
+     * Prepares the in-memory database and Dao for testing.
+     * This is executed before each test.
+     */
     @Before
     fun createDb() {
         val context: Context = ApplicationProvider.getApplicationContext()
-        // Using an in-memory database because the information stored here disappears when the
-        // process is killed.
         parkingDb = Room.inMemoryDatabaseBuilder(context, ParkingDb::class.java)
-            // Allowing main thread queries, just for testing.
             .allowMainThreadQueries()
             .build()
         parkingDao = parkingDb.parkingDao()
     }
 
+    /**
+     * Closes the in-memory database after testing.
+     * This is executed after each test.
+     */
     @After
     @Throws(IOException::class)
     fun closeDb() {
         parkingDb.close()
     }
 
+    /**
+     * Tests if a single parking can be inserted into the database.
+     */
     @Test
     @Throws(Exception::class)
     fun daoInsert_insertParkingIntoDB() = runBlocking {
@@ -131,6 +148,9 @@ class ParkingDaoTest {
         assertEquals(allItems[0].asDomainParking(), parking1)
     }
 
+    /**
+     * Tests if all parkings can be retrieved from the database.
+     */
     @Test
     @Throws(Exception::class)
     fun daoGetAllParkings_returnsAllParkingsFromDB() = runBlocking {

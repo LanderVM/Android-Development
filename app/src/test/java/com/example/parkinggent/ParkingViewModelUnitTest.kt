@@ -25,6 +25,10 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
+/**
+ * A unit test class for ParkingViewModel.
+ * Tests include the verification of UI state updates and sorting functionalities.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class ParkingViewModelUnitTest {
@@ -107,6 +111,9 @@ class ParkingViewModelUnitTest {
         )
     }
 
+    /**
+     * Sets up the ViewModel and mock responses before each test.
+     */
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
@@ -117,23 +124,35 @@ class ParkingViewModelUnitTest {
         }
     }
 
+    /**
+     * Mocks the response of the parking repository for testing the ViewModel.
+     */
     private fun mockParkingRepositoryResponses() {
         Mockito.`when`(parkingRepositoryMock.getParking()).thenReturn(
             flowOf(listOf(tolhuisParkingInfo, savaanstraatParkingInfo))
         )
     }
 
+    /**
+     * Resets resources after each test.
+     */
     @After
     fun tearDown() {
         Dispatchers.resetMain()
     }
 
+    /**
+     * Tests if parking data is successfully fetched and updates the UI state.
+     */
     @Test
     fun fetch_parking_data_updates_uiState() = runTest {
         val parkingListState = viewModel.uiState.first().parkingList
         assertEquals(listOf(tolhuisParkingInfo, savaanstraatParkingInfo), parkingListState)
     }
 
+    /**
+     * Tests if sorting by name correctly sorts the parking list in ascending order.
+     */
     @Test
     fun sortParkingsByName_sorts_parking_list_by_name() = runTest {
         viewModel.sortParkingsByName()
@@ -142,6 +161,9 @@ class ParkingViewModelUnitTest {
         assertEquals(expectedSortedByName, parkingListState)
     }
 
+    /**
+     * Tests if sorting by free places correctly sorts the parking list in descending order.
+     */
     @Test
     fun sortParkingsByFreePlaces_sorts_parking_list_by_free_places() = runTest {
         viewModel.sortParkingsByFreePlaces()
@@ -150,6 +172,9 @@ class ParkingViewModelUnitTest {
         assertEquals(expectedSortedByName, parkingListState)
     }
 
+    /**
+     * Tests successful data fetching and verifies the corresponding API state.
+     */
     @Test
     fun data_fetched_successfully() = runTest {
         val mockData = listOf(tolhuisParkingInfo, savaanstraatParkingInfo)
