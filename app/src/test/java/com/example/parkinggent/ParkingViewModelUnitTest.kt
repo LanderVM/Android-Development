@@ -183,7 +183,7 @@ class ParkingViewModelUnitTest {
         viewModel = ParkingViewModel(parkingRepositoryMock)
         advanceUntilIdle()
 
-        assertEquals(ParkingApiState.Success, viewModel.parkingApiState)
+        assertEquals(ParkingApiState.Success, viewModel.parkingApiState.value)
         assertEquals(mockData, viewModel.uiState.value.parkingList)
     }
 }
