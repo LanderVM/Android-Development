@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 /**
  * ViewModel associated with the DetailScreen, responsible for fetching and managing the parking spot's details.
@@ -45,7 +44,8 @@ class DetailViewModel(private val parkingRepository: ParkingRepository) : ViewMo
             try {
                 val parkingDetails = parkingRepository.getParking(parkingId).firstOrNull()
                 _parkingDetailState.value = parkingDetails
-                _parkingApiState.value = if (parkingDetails != null) ParkingApiState.Success else ParkingApiState.Error
+                _parkingApiState.value =
+                    if (parkingDetails != null) ParkingApiState.Success else ParkingApiState.Error
             } catch (e: Exception) {
                 Log.e("DetailViewModel", "Error fetching parking details: ${e.message}")
                 _parkingApiState.value = ParkingApiState.Error
@@ -82,17 +82,26 @@ class DetailViewModel(private val parkingRepository: ParkingRepository) : ViewMo
     }
 
     /**
-     * Opens Google Maps at the specified latitude and longitude coordinates.
-     * This function can be used to show the location of the parking spot on the map.
+     * Checks if Google Maps is installed and opens it with the waypoint. If not installed,
+     * opens a web-based map in the browser.
      *
      * @param context The current context, used to start the Google Maps activity.
      * @param latitude The latitude coordinate of the location.
      * @param longitude The longitude coordinate of the location.
      */
     fun openGoogleMaps(context: Context, latitude: Double, longitude: Double) {
-        val uri = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude)
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        context.startActivity(intent)
+        val uri = Uri.parse("google.navigation:q=$latitude,$longitude&mode=d")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.google.android.apps.maps")
+
+        if (intent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(intent)
+        } else {
+            val webUri =
+                Uri.parse("https://www.google.com/maps/search/?api=1&query=$latitude,$longitude")
+            val webIntent = Intent(Intent.ACTION_VIEW, webUri)
+            context.startActivity(webIntent)
+        }
     }
 
     /**

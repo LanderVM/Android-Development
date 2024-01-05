@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -33,6 +34,9 @@ import com.example.parkinggent.R
 import com.example.parkinggent.ui.common.ErrorComponent
 import com.example.parkinggent.ui.common.LoadingComponent
 import com.example.parkinggent.ui.theme.AppTheme
+import eu.bambooapps.material3.pullrefresh.PullRefreshIndicator
+import eu.bambooapps.material3.pullrefresh.pullRefresh
+import eu.bambooapps.material3.pullrefresh.rememberPullRefreshState
 
 /**
  * Composable function that represents the main screen displaying parking spots.
@@ -41,6 +45,7 @@ import com.example.parkinggent.ui.theme.AppTheme
  * @param parkingViewModel The ViewModel providing parking data and functionality.
  * @param navigateToAbout Function to navigate to the detail screen of a parking spot.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingScreen(
     modifier: Modifier = Modifier,
@@ -48,41 +53,57 @@ fun ParkingScreen(
     navigateToAbout: (String) -> Unit
 ) {
     val parkingListState by parkingViewModel.uiState.collectAsState()
-    val parkingApiState = parkingViewModel.parkingApiState
-    var selectedSortOption by remember { mutableStateOf("") }
+    val parkingApiState by parkingViewModel.parkingApiState.collectAsState()
+    val viewModelSortOption by parkingViewModel.selectedSortOption.collectAsState()
+    var selectedSortOption by remember { mutableStateOf(viewModelSortOption) }
+    val isUserInitiatedRefresh by parkingViewModel.isUserInitiatedRefresh.collectAsState()
+    val refreshing = parkingApiState is ParkingApiState.Loading && isUserInitiatedRefresh
 
-    Column(modifier = modifier.fillMaxSize()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            SortButtons(
-                selectedSortOption = selectedSortOption,
-                onSortOptionSelected = { option ->
-                    selectedSortOption = option
-                },
-                parkingViewModel = parkingViewModel,
-            )
-        }
+    if (refreshing) {
+        selectedSortOption = ""
+    }
 
-        Box(
-            modifier = Modifier
-                .weight(1f, fill = true)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            when (parkingApiState) {
-                is ParkingApiState.Loading -> LoadingComponent()
-                is ParkingApiState.Error -> ErrorComponent(errorMessage = stringResource(id = R.string.loadingError))
-                is ParkingApiState.Success -> ParkingListComponent(
-                    parkingState = parkingListState,
-                    navigateToAbout = navigateToAbout
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = refreshing,
+        onRefresh = { parkingViewModel.refresh() }
+    )
+
+    Box(Modifier.pullRefresh(pullRefreshState)) {
+        Column(modifier = modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                SortButtons(
+                    selectedSortOption = selectedSortOption,
+                    onSortOptionSelected = { option ->
+                        selectedSortOption = option
+                    },
+                    parkingViewModel = parkingViewModel,
                 )
             }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f, fill = true)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                when (parkingApiState) {
+                    is ParkingApiState.Loading -> LoadingComponent()
+                    is ParkingApiState.Error -> ErrorComponent(errorMessage = stringResource(id = R.string.loadingError))
+                    is ParkingApiState.Success -> ParkingListComponent(
+                        parkingState = parkingListState,
+                        navigateToAbout = navigateToAbout
+                    )
+                }
+            }
         }
+        PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
     }
 }
+
 
 /**
  * Composable function that represents a list of parking cards.

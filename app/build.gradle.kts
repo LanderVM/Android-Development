@@ -72,6 +72,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
     implementation("androidx.navigation:navigation-testing:2.7.6")
+    implementation("androidx.wear.compose:compose-material:1.2.1")
     //room
     val room_version = "2.5.0"
     implementation("androidx.room:room-runtime:$room_version")
@@ -87,6 +88,9 @@ dependencies {
     implementation("org.mockito:mockito-core:3.12.4")
     implementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.33.2-alpha")
+    implementation("eu.bambooapps:compose-material3-pullrefresh:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

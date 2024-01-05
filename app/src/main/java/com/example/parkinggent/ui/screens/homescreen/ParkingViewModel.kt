@@ -1,9 +1,6 @@
 package com.example.parkinggent.ui.screens.homescreen
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -17,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 /**
  * ViewModel for managing parking data and state in the ParkingScreen.
@@ -28,8 +24,16 @@ import java.io.IOException
 class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(ParkingListState())
     val uiState: StateFlow<ParkingListState> = _uiState.asStateFlow()
-    var parkingApiState: ParkingApiState by mutableStateOf(ParkingApiState.Loading)
-        private set
+
+    private val _parkingApiState = MutableStateFlow<ParkingApiState>(ParkingApiState.Loading)
+    val parkingApiState: StateFlow<ParkingApiState> = _parkingApiState.asStateFlow()
+
+    private val _selectedSortOption = MutableStateFlow("")
+
+    val selectedSortOption: StateFlow<String> = _selectedSortOption.asStateFlow()
+    private val _isUserInitiatedRefresh = MutableStateFlow(false)
+    val isUserInitiatedRefresh: StateFlow<Boolean> = _isUserInitiatedRefresh.asStateFlow()
+
 
     /**
      * Initializes the ViewModel by fetching parking data from the repository.
@@ -39,21 +43,30 @@ class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewM
     }
 
     /**
+     * Refreshes parking data by resetting the state and fetching new data.
+     */
+    fun refresh() {
+        _isUserInitiatedRefresh.value = true
+        _parkingApiState.value = ParkingApiState.Loading
+        getRepoParkings()
+    }
+
+    /**
      * Fetches parking data from the repository and updates the UI state.
      * Sets the parkingApiState to Success or Error based on the result.
      */
     private fun getRepoParkings() {
         viewModelScope.launch {
-            parkingApiState = ParkingApiState.Loading
+            _parkingApiState.value = ParkingApiState.Loading
             try {
                 parkingRepository.getParking().collect { listResult ->
                     _uiState.value = ParkingListState(listResult)
-                    parkingApiState = ParkingApiState.Success
+                    _parkingApiState.value = ParkingApiState.Success
+                    _isUserInitiatedRefresh.value = false
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 Log.e("ParkingViewModel", "Error fetching parkings: ${e.message}")
-                parkingApiState = ParkingApiState.Error
-
+                _parkingApiState.value = ParkingApiState.Error
             }
         }
     }
@@ -73,8 +86,8 @@ class ParkingViewModel(private val parkingRepository: ParkingRepository) : ViewM
     }
 
     /**
-    * Sorts the parking list by name in ascending order.
-    */
+     * Sorts the parking list by name in ascending order.
+     */
     fun sortParkingsByName() {
         _uiState.update { currentState ->
             currentState.copy(parkingList = currentState.parkingList.sortedBy { it.name })
